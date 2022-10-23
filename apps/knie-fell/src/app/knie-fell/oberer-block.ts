@@ -1,4 +1,3 @@
-import { inject, Injectable, OnDestroy, Provider } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -7,18 +6,13 @@ import {
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
-import { combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
-import { rawValueChanges } from './forms';
+import { map, Observable } from 'rxjs';
 
-type OhneEingabe = null;
-const ohneEingabe: OhneEingabe = null;
+import { rawValueChanges } from '@flensrocker/forms';
 
-type Gestrichen = 0;
-const gestrichen: Gestrichen = 0;
+import { anzahlWuerfel, Feld, gestrichen, ohneEingabe } from './constants';
 
-type Feld = OhneEingabe | Gestrichen | number;
-
-type ObererBlockValue = {
+export type ObererBlockValue = {
   readonly einser: Feld;
   readonly zweier: Feld;
   readonly dreier: Feld;
@@ -27,7 +21,7 @@ type ObererBlockValue = {
   readonly sechser: Feld;
 };
 
-const initialObererBlockValue: ObererBlockValue = {
+export const initialObererBlockValue: ObererBlockValue = {
   einser: ohneEingabe,
   zweier: ohneEingabe,
   dreier: ohneEingabe,
@@ -36,7 +30,7 @@ const initialObererBlockValue: ObererBlockValue = {
   sechser: ohneEingabe,
 };
 
-type ObererBlockForm = {
+export type ObererBlockForm = {
   readonly einser: FormControl<Feld>;
   readonly zweier: FormControl<Feld>;
   readonly dreier: FormControl<Feld>;
@@ -46,7 +40,7 @@ type ObererBlockForm = {
 };
 
 const vielfachesVon = (faktor: number): ValidatorFn => {
-  const maximum = faktor * 5;
+  const maximum = faktor * anzahlWuerfel;
 
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;
@@ -71,15 +65,15 @@ const vielfachesVon = (faktor: number): ValidatorFn => {
 
 const createObererBlockForm = (
   fb: NonNullableFormBuilder,
-  werte: ObererBlockValue
+  value: ObererBlockValue
 ): FormGroup<ObererBlockForm> => {
   const form = fb.group<ObererBlockForm>({
-    einser: fb.control(werte.einser, { validators: [vielfachesVon(1)] }),
-    zweier: fb.control(werte.zweier, { validators: [vielfachesVon(2)] }),
-    dreier: fb.control(werte.dreier, { validators: [vielfachesVon(3)] }),
-    vierer: fb.control(werte.vierer, { validators: [vielfachesVon(4)] }),
-    fuenfer: fb.control(werte.fuenfer, { validators: [vielfachesVon(5)] }),
-    sechser: fb.control(werte.sechser, { validators: [vielfachesVon(6)] }),
+    einser: fb.control(value.einser, { validators: [vielfachesVon(1)] }),
+    zweier: fb.control(value.zweier, { validators: [vielfachesVon(2)] }),
+    dreier: fb.control(value.dreier, { validators: [vielfachesVon(3)] }),
+    vierer: fb.control(value.vierer, { validators: [vielfachesVon(4)] }),
+    fuenfer: fb.control(value.fuenfer, { validators: [vielfachesVon(5)] }),
+    sechser: fb.control(value.sechser, { validators: [vielfachesVon(6)] }),
   });
 
   return form;
@@ -90,7 +84,7 @@ const obenKeinBonus: ObererBlockBonus = 0;
 const obenBonus: ObererBlockBonus = 35;
 const obenBonusAb = 63;
 
-type ObererBlockState = {
+export type ObererBlockState = {
   readonly werte: ObererBlockValue;
   readonly gesamt: number;
   readonly bonus: ObererBlockBonus;
@@ -132,54 +126,14 @@ const calcObererBlock = (werte: ObererBlockValue): ObererBlockState => {
   };
 };
 
-@Injectable()
-class ObererBlockStore implements OnDestroy {
-  readonly #destroyed = new Subject<void>();
-  readonly #fb = inject(NonNullableFormBuilder);
+export class ObererBlockStore {
+  readonly form: FormGroup<ObererBlockForm>;
+  readonly state$: Observable<ObererBlockState>;
 
-  readonly form = createObererBlockForm(this.#fb, initialObererBlockValue);
-  readonly state$ = rawValueChanges(this.form).pipe(
-    map((werte) => calcObererBlock(werte)),
-    takeUntil(this.#destroyed)
-  );
-
-  ngOnDestroy(): void {
-    this.#destroyed.next();
-    this.#destroyed.complete();
+  constructor(readonly fb: NonNullableFormBuilder, value: ObererBlockValue) {
+    this.form = createObererBlockForm(fb, value);
+    this.state$ = rawValueChanges(this.form, {
+      emitInitialValue: true,
+    }).pipe(map((werte) => calcObererBlock(werte)));
   }
 }
-
-type KnieFellForm = {
-  obererBlock: FormGroup<ObererBlockForm>;
-};
-
-export type KnieFellState = {
-  readonly obererBlock: ObererBlockState;
-};
-
-@Injectable()
-export class KnieFellStore implements OnDestroy {
-  readonly #destroyed = new Subject<void>();
-  readonly #fb = inject(NonNullableFormBuilder);
-  readonly #obererBlock = inject(ObererBlockStore);
-
-  readonly form = this.#fb.group<KnieFellForm>({
-    obererBlock: this.#obererBlock.form,
-  });
-  readonly state$: Observable<KnieFellState> = combineLatest([
-    this.#obererBlock.state$,
-  ]).pipe(
-    map(([obererBlock]) => ({ obererBlock })),
-    takeUntil(this.#destroyed)
-  );
-
-  ngOnDestroy(): void {
-    this.#destroyed.next();
-    this.#destroyed.complete();
-  }
-}
-
-export const provideKnieFell = (): Provider[] => [
-  ObererBlockStore,
-  KnieFellStore,
-];
