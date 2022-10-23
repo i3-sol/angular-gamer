@@ -26,7 +26,9 @@ type KnieFellValue = {
 
 const initialKnieFellValue: KnieFellValue = {
   name: '',
-  spiele: new Array(anzahlSpiele).fill(initialSpielValue),
+  spiele: new Array(anzahlSpiele)
+    .fill(null)
+    .map((_, index) => initialSpielValue(index + 1)),
 };
 
 export type KnieFellForm = {

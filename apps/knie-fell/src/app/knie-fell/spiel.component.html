@@ -1,0 +1,10 @@
+<ng-container *ngIf="store" [formGroup]="store.form">
+  <ng-container *ngIf="store.state$ | async as state">
+    <div class="kf-label" *ngIf="state.showLabels"></div>
+    <div class="kf-column">Spiel {{ state.nummer }}</div>
+    <kf-oberer-block
+      [store]="store.obererBlockStore"
+      [showLabels]="state.showLabels"
+    ></kf-oberer-block>
+  </ng-container>
+</ng-container>

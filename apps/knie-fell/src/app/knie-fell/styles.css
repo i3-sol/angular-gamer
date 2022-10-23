@@ -1,0 +1,21 @@
+.ng-invalid {
+  border-color: red;
+}
+
+.kf-spiele-container {
+  display: flex;
+}
+
+.kf-label {
+  display: inline-block;
+  width: 100px;
+}
+
+.kf-column {
+  display: inline-block;
+  width: 50px;
+}
+
+.kf-field-value {
+  text-align: right;
+}

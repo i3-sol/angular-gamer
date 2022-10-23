@@ -1,14 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { KnieFellComponent } from './knie-fell';
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, CommonModule, ReactiveFormsModule],
-  providers: [],
+  imports: [BrowserModule, KnieFellComponent],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

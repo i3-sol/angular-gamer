@@ -10,7 +10,13 @@ import { map, Observable } from 'rxjs';
 
 import { rawValueChanges } from '@flensrocker/forms';
 
-import { anzahlWuerfel, Feld, gestrichen, ohneEingabe } from './constants';
+import {
+  anzahlWuerfel,
+  Feld,
+  gestrichen,
+  getFeldValue,
+  ohneEingabe,
+} from './constants';
 
 export type ObererBlockValue = {
   readonly einser: Feld;
@@ -93,12 +99,12 @@ export type ObererBlockState = {
 
 const calcObererBlockGesamt = (werte: ObererBlockValue): number => {
   return (
-    (werte.einser ?? 0) +
-    (werte.zweier ?? 0) +
-    (werte.dreier ?? 0) +
-    (werte.vierer ?? 0) +
-    (werte.fuenfer ?? 0) +
-    (werte.sechser ?? 0)
+    getFeldValue(werte.einser) +
+    getFeldValue(werte.zweier) +
+    getFeldValue(werte.dreier) +
+    getFeldValue(werte.vierer) +
+    getFeldValue(werte.fuenfer) +
+    getFeldValue(werte.sechser)
   );
 };
 

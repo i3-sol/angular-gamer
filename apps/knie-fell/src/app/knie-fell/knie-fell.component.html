@@ -1,0 +1,13 @@
+<ng-container *ngIf="store.state$ | async as state" [formGroup]="store.form">
+  <div>
+    <label class="kf-label">Name</label>
+    <input type="text" formControlName="name" />
+  </div>
+  <div class="kf-spiele-container">
+    <ng-container
+      *ngFor="let spielStore of store.spielStores; trackBy: trackSpiel"
+    >
+      <kf-spiel [store]="spielStore"></kf-spiel>
+    </ng-container>
+  </div>
+</ng-container>

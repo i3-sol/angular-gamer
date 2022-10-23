@@ -1,1 +1,1 @@
-export * from './knie-fell';
+export * from './knie-fell.component';
