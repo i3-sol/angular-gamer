@@ -55,6 +55,7 @@ export type SpielState = {
   readonly nummer: number;
   readonly obererBlock: ObererBlockState;
   readonly untererBlock: UntererBlockState;
+  readonly summeGesamt: number;
 };
 
 export const mapSpielFormToState = (
@@ -69,13 +70,30 @@ export const mapSpielFormToState = (
   const untererBlockState$ = mapUntererBlockFormToState(
     form.controls.untererBlock
   );
+  const summeGesamt$ = combineLatest([
+    obererBlockState$.pipe(map((obererBlock) => obererBlock.gesamtObererBlock)),
+    untererBlockState$.pipe(
+      map((untererBlock) => untererBlock.gesamtUntererBlock)
+    ),
+  ]).pipe(
+    map(
+      ([gesamtObererBlock, gesamtUntererBlock]) =>
+        gesamtObererBlock + gesamtUntererBlock
+    )
+  );
 
-  return combineLatest([nummer$, obererBlockState$, untererBlockState$]).pipe(
-    map(([nummer, obererBlock, untererBlock]) => ({
+  return combineLatest([
+    nummer$,
+    obererBlockState$,
+    untererBlockState$,
+    summeGesamt$,
+  ]).pipe(
+    map(([nummer, obererBlock, untererBlock, summeGesamt]) => ({
       form,
       nummer,
       obererBlock,
       untererBlock,
+      summeGesamt,
     }))
   );
 };

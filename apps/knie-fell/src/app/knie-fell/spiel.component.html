@@ -9,4 +9,14 @@
     [state]="state.untererBlock"
     [showLabels]="showLabels"
   ></kf-unterer-block>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Gesamt oben</label>
+    <span class="kf-column kf-field-value">{{
+      state.obererBlock.gesamtObererBlock
+    }}</span>
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Gesamtsumme</label>
+    <span class="kf-column kf-field-value">{{ state.summeGesamt }}</span>
+  </div>
 </ng-container>
