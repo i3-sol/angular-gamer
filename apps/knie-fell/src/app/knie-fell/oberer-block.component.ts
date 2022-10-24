@@ -1,8 +1,17 @@
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+} from '@angular/core';
+import {
+  ControlContainer,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
-import { ObererBlockStore } from './oberer-block';
+import { ObererBlockForm, ObererBlockService } from './oberer-block';
 
 @Component({
   selector: 'kf-oberer-block',
@@ -13,6 +22,12 @@ import { ObererBlockStore } from './oberer-block';
   imports: [NgIf, AsyncPipe, JsonPipe, ReactiveFormsModule],
 })
 export class ObererBlockComponent {
-  @Input() store: ObererBlockStore | null = null;
+  readonly #controlContainer = inject(ControlContainer);
+
+  get obererBlockForm(): FormGroup<ObererBlockForm> | null {
+    return this.#controlContainer.control as FormGroup<ObererBlockForm> | null;
+  }
+
+  @Input() obererBlockService: ObererBlockService | null = null;
   @Input() showLabels = false;
 }

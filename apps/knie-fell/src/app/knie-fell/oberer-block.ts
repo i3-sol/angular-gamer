@@ -69,7 +69,7 @@ const vielfachesVon = (faktor: number): ValidatorFn => {
   };
 };
 
-const createObererBlockForm = (
+export const createObererBlockForm = (
   fb: NonNullableFormBuilder,
   value: ObererBlockValue
 ): FormGroup<ObererBlockForm> => {
@@ -132,13 +132,11 @@ const calcObererBlock = (werte: ObererBlockValue): ObererBlockState => {
   };
 };
 
-export class ObererBlockStore {
-  readonly form: FormGroup<ObererBlockForm>;
+export class ObererBlockService {
   readonly state$: Observable<ObererBlockState>;
 
-  constructor(readonly fb: NonNullableFormBuilder, value: ObererBlockValue) {
-    this.form = createObererBlockForm(fb, value);
-    this.state$ = rawValueChanges(this.form, {
+  constructor(form: FormGroup<ObererBlockForm>) {
+    this.state$ = rawValueChanges(form, {
       emitInitialValue: true,
     }).pipe(map((werte) => calcObererBlock(werte)));
   }

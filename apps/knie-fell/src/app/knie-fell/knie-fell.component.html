@@ -1,13 +1,25 @@
-<ng-container *ngIf="store.state$ | async as state" [formGroup]="store.form">
+<ng-container
+  *ngIf="knieFellService.state$ | async as state"
+  [formGroup]="knieFellService.form"
+>
   <div>
     <label class="kf-label">Name</label>
     <input type="text" formControlName="name" />
   </div>
-  <div class="kf-spiele-container">
+  <div class="kf-spiele-container" formArrayName="spiele">
     <ng-container
-      *ngFor="let spielStore of store.spielStores; trackBy: trackSpiel"
+      *ngFor="
+        let spiel of state.spiele;
+        let spielIndex = index;
+        let firstSpiel = first;
+        trackBy: trackSpiel
+      "
     >
-      <kf-spiel [store]="spielStore"></kf-spiel>
+      <kf-spiel
+        [spielService]="knieFellService.spielServices[spielIndex]"
+        [showLabels]="firstSpiel"
+        [formGroupName]="spielIndex"
+      ></kf-spiel>
     </ng-container>
   </div>
 </ng-container>

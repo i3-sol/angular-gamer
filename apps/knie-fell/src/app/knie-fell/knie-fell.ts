@@ -12,10 +12,11 @@ import { rawValueChanges } from '@flensrocker/forms';
 
 import { anzahlSpiele } from './constants';
 import {
+  createSpielForm,
   initialSpielValue,
   SpielForm,
   SpielState,
-  SpielStore,
+  SpielService,
   SpielValue,
 } from './spiel';
 
@@ -38,12 +39,11 @@ export type KnieFellForm = {
 
 const createKnieFellForm = (
   fb: NonNullableFormBuilder,
-  value: KnieFellValue,
-  spiele: FormGroup<SpielForm>[]
+  value: KnieFellValue
 ): FormGroup<KnieFellForm> => {
   const form = fb.group<KnieFellForm>({
     name: fb.control(value.name, { validators: Validators.required }),
-    spiele: fb.array(spiele),
+    spiele: fb.array(value.spiele.map((spiel) => createSpielForm(fb, spiel))),
   });
 
   return form;
@@ -55,27 +55,22 @@ export type KnieFellState = {
 };
 
 @Injectable()
-export class KnieFellStore {
+export class KnieFellService {
   readonly #fb = inject(NonNullableFormBuilder);
 
-  readonly spielStores: readonly SpielStore[];
   readonly form: FormGroup<KnieFellForm>;
+  readonly spielServices: readonly SpielService[];
   readonly state$: Observable<KnieFellState>;
 
   constructor() {
-    const value = initialKnieFellValue;
-    this.spielStores = value.spiele.map(
-      (spiel) => new SpielStore(this.#fb, spiel)
+    this.form = createKnieFellForm(this.#fb, initialKnieFellValue);
+    this.spielServices = this.form.controls.spiele.controls.map(
+      (spielForm) => new SpielService(spielForm)
     );
     const spiele$ = combineLatest(
-      this.spielStores.map((spielStore) => spielStore.state$)
+      this.spielServices.map((spielService) => spielService.state$)
     );
 
-    this.form = createKnieFellForm(
-      this.#fb,
-      value,
-      this.spielStores.map((spielStore) => spielStore.form)
-    );
     const name$ = rawValueChanges(this.form.controls.name, {
       emitInitialValue: true,
     });
@@ -85,4 +80,4 @@ export class KnieFellStore {
   }
 }
 
-export const provideKnieFell = (): Provider[] => [KnieFellStore];
+export const provideKnieFell = (): Provider[] => [KnieFellService];

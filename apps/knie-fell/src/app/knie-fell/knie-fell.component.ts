@@ -2,8 +2,8 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { KnieFellStore, provideKnieFell } from './knie-fell';
-import { SpielStore } from './spiel';
+import { KnieFellService, provideKnieFell } from './knie-fell';
+import { SpielState } from './spiel';
 import { SpielComponent } from './spiel.component';
 
 @Component({
@@ -16,9 +16,9 @@ import { SpielComponent } from './spiel.component';
   providers: [provideKnieFell()],
 })
 export class KnieFellComponent {
-  readonly store = inject(KnieFellStore);
+  readonly knieFellService = inject(KnieFellService);
 
-  trackSpiel(_index: number, spielStore: SpielStore): number {
-    return spielStore.nummer;
+  trackSpiel(_index: number, spiel: SpielState): number {
+    return spiel.nummer;
   }
 }

@@ -1,9 +1,18 @@
 import { AsyncPipe, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Input,
+} from '@angular/core';
+import {
+  ControlContainer,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ObererBlockComponent } from './oberer-block.component';
 
-import { SpielStore } from './spiel';
+import { SpielForm, SpielService } from './spiel';
 
 @Component({
   selector: 'kf-spiel',
@@ -14,5 +23,12 @@ import { SpielStore } from './spiel';
   imports: [NgIf, AsyncPipe, ReactiveFormsModule, ObererBlockComponent],
 })
 export class SpielComponent {
-  @Input() store: SpielStore | null = null;
+  readonly #controlContainer = inject(ControlContainer);
+
+  get spielForm(): FormGroup<SpielForm> | null {
+    return this.#controlContainer.control as FormGroup<SpielForm> | null;
+  }
+
+  @Input() spielService: SpielService | null = null;
+  @Input() showLabels = false;
 }

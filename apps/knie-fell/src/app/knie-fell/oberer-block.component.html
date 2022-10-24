@@ -1,5 +1,8 @@
-<ng-container *ngIf="store" [formGroup]="store.form">
-  <ng-container *ngIf="store.state$ | async as state">
+<ng-container
+  *ngIf="obererBlockService && obererBlockForm"
+  [formGroup]="obererBlockForm"
+>
+  <ng-container *ngIf="obererBlockService.state$ | async as state">
     <div>
       <label *ngIf="showLabels" class="kf-label">Einser</label>
       <input
