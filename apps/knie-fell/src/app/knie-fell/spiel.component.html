@@ -1,11 +1,9 @@
-<ng-container *ngIf="spielService && spielForm" [formGroup]="spielForm">
-  <ng-container *ngIf="spielService.state$ | async as state">
-    <div class="kf-label" *ngIf="showLabels"></div>
-    <div class="kf-column">Spiel {{ state.nummer }}</div>
-    <kf-oberer-block
-      formGroupName="obererBlock"
-      [obererBlockService]="spielService.obererBlockService"
-      [showLabels]="showLabels"
-    ></kf-oberer-block>
-  </ng-container>
+<ng-container *ngIf="state && spielForm" [formGroup]="spielForm">
+  <div class="kf-label" *ngIf="showLabels"></div>
+  <div class="kf-column">Spiel {{ state.nummer }}</div>
+  <kf-oberer-block
+    formGroupName="obererBlock"
+    [state]="state.obererBlock"
+    [showLabels]="showLabels"
+  ></kf-oberer-block>
 </ng-container>

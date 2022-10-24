@@ -132,12 +132,10 @@ const calcObererBlock = (werte: ObererBlockValue): ObererBlockState => {
   };
 };
 
-export class ObererBlockService {
-  readonly state$: Observable<ObererBlockState>;
-
-  constructor(form: FormGroup<ObererBlockForm>) {
-    this.state$ = rawValueChanges(form, {
-      emitInitialValue: true,
-    }).pipe(map((werte) => calcObererBlock(werte)));
-  }
-}
+export const mapObererBlockFormToState = (
+  form: FormGroup<ObererBlockForm>
+): Observable<ObererBlockState> => {
+  return rawValueChanges(form, {
+    emitInitialValue: true,
+  }).pipe(map((werte) => calcObererBlock(werte)));
+};

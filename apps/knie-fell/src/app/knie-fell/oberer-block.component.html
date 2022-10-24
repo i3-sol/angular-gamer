@@ -1,75 +1,68 @@
-<ng-container
-  *ngIf="obererBlockService && obererBlockForm"
-  [formGroup]="obererBlockForm"
->
-  <ng-container *ngIf="obererBlockService.state$ | async as state">
-    <div>
-      <label *ngIf="showLabels" class="kf-label">Einser</label>
-      <input
-        class="kf-column kf-field-value"
-        type="number"
-        step="1"
-        formControlName="einser"
-      />
-    </div>
-    <div>
-      <label *ngIf="showLabels" class="kf-label">Zweier</label>
-      <input
-        class="kf-column kf-field-value"
-        type="number"
-        step="1"
-        formControlName="zweier"
-      />
-    </div>
-    <div>
-      <label *ngIf="showLabels" class="kf-label">Dreier</label>
-      <input
-        class="kf-column kf-field-value"
-        type="number"
-        step="1"
-        formControlName="dreier"
-      />
-    </div>
-    <div>
-      <label *ngIf="showLabels" class="kf-label">Vierer</label>
-      <input
-        class="kf-column kf-field-value"
-        type="number"
-        step="1"
-        formControlName="vierer"
-      />
-    </div>
-    <div>
-      <label *ngIf="showLabels" class="kf-label">Fünfer</label>
-      <input
-        class="kf-column kf-field-value"
-        type="number"
-        step="1"
-        formControlName="fuenfer"
-      />
-    </div>
-    <div>
-      <label *ngIf="showLabels" class="kf-label">Sechser</label>
-      <input
-        class="kf-column kf-field-value"
-        type="number"
-        step="1"
-        formControlName="sechser"
-      />
-    </div>
-    <div>
-      <label *ngIf="showLabels" class="kf-label">Gesamt</label>
-      <span class="kf-column kf-field-value">{{ state.gesamt }}</span>
-    </div>
-    <div>
-      <label *ngIf="showLabels" class="kf-label">Bonus</label>
-      <span class="kf-column kf-field-value">{{ state.bonus }}</span>
-    </div>
-    <div>
-      <label *ngIf="showLabels" class="kf-label">Gesamt oben</label>
-      <span class="kf-column kf-field-value">{{
-        state.gesamtObererBlock
-      }}</span>
-    </div>
-  </ng-container>
+<ng-container *ngIf="state && obererBlockForm" [formGroup]="obererBlockForm">
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Einser</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="einser"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Zweier</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="zweier"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Dreier</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="dreier"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Vierer</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="vierer"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Fünfer</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="fuenfer"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Sechser</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="sechser"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Gesamt</label>
+    <span class="kf-column kf-field-value">{{ state.gesamt }}</span>
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Bonus</label>
+    <span class="kf-column kf-field-value">{{ state.bonus }}</span>
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Gesamt oben</label>
+    <span class="kf-column kf-field-value">{{ state.gesamtObererBlock }}</span>
+  </div>
 </ng-container>

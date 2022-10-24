@@ -12,7 +12,7 @@ import {
 } from '@angular/forms';
 import { ObererBlockComponent } from './oberer-block.component';
 
-import { SpielForm, SpielService } from './spiel';
+import { SpielForm, SpielState } from './spiel';
 
 @Component({
   selector: 'kf-spiel',
@@ -29,6 +29,6 @@ export class SpielComponent {
     return this.#controlContainer.control as FormGroup<SpielForm> | null;
   }
 
-  @Input() spielService: SpielService | null = null;
+  @Input() state: SpielState | null = null;
   @Input() showLabels = false;
 }

@@ -15,8 +15,8 @@ import {
   createSpielForm,
   initialSpielValue,
   SpielForm,
-  SpielState,
   SpielService,
+  SpielState,
   SpielValue,
 } from './spiel';
 

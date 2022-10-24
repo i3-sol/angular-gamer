@@ -11,7 +11,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 
-import { ObererBlockForm, ObererBlockService } from './oberer-block';
+import { ObererBlockForm, ObererBlockState } from './oberer-block';
 
 @Component({
   selector: 'kf-oberer-block',
@@ -28,6 +28,6 @@ export class ObererBlockComponent {
     return this.#controlContainer.control as FormGroup<ObererBlockForm> | null;
   }
 
-  @Input() obererBlockService: ObererBlockService | null = null;
+  @Input() state: ObererBlockState | null = null;
   @Input() showLabels = false;
 }

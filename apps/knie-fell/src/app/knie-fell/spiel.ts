@@ -7,8 +7,8 @@ import {
   initialObererBlockValue,
   ObererBlockForm,
   ObererBlockState,
-  ObererBlockService,
   ObererBlockValue,
+  mapObererBlockFormToState,
 } from './oberer-block';
 
 export type SpielValue = {
@@ -43,20 +43,28 @@ export type SpielState = {
   readonly obererBlock: ObererBlockState;
 };
 
+export const mapSpielFormToState = (
+  form: FormGroup<SpielForm>
+): Observable<SpielState> => {
+  const nummer$ = rawValueChanges(form.controls.nummer, {
+    emitInitialValue: true,
+  });
+  const obererBlockState$ = mapObererBlockFormToState(
+    form.controls.obererBlock
+  );
+
+  return combineLatest([nummer$, obererBlockState$]).pipe(
+    map(([nummer, obererBlock]) => ({
+      nummer,
+      obererBlock,
+    }))
+  );
+};
+
 export class SpielService {
-  readonly obererBlockService: ObererBlockService;
   readonly state$: Observable<SpielState>;
 
   constructor(form: FormGroup<SpielForm>) {
-    this.obererBlockService = new ObererBlockService(form.controls.obererBlock);
-    const nummer$ = rawValueChanges(form.controls.nummer, {
-      emitInitialValue: true,
-    });
-    this.state$ = combineLatest([nummer$, this.obererBlockService.state$]).pipe(
-      map(([nummer, obererBlock]) => ({
-        nummer,
-        obererBlock,
-      }))
-    );
+    this.state$ = mapSpielFormToState(form);
   }
 }
