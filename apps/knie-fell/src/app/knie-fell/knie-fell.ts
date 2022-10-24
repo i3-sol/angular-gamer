@@ -1,4 +1,3 @@
-import { inject, Injectable, Provider } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -14,18 +13,18 @@ import { anzahlSpiele } from './constants';
 import {
   createSpielForm,
   initialSpielValue,
+  mapSpielFormToState,
   SpielForm,
-  SpielService,
   SpielState,
   SpielValue,
 } from './spiel';
 
-type KnieFellValue = {
+export type KnieFellValue = {
   readonly name: string;
   readonly spiele: readonly SpielValue[];
 };
 
-const initialKnieFellValue: KnieFellValue = {
+export const initialKnieFellValue: KnieFellValue = {
   name: '',
   spiele: new Array(anzahlSpiele)
     .fill(null)
@@ -37,7 +36,7 @@ export type KnieFellForm = {
   spiele: FormArray<FormGroup<SpielForm>>;
 };
 
-const createKnieFellForm = (
+export const createKnieFellForm = (
   fb: NonNullableFormBuilder,
   value: KnieFellValue
 ): FormGroup<KnieFellForm> => {
@@ -50,33 +49,24 @@ const createKnieFellForm = (
 };
 
 export type KnieFellState = {
+  readonly form: FormGroup<KnieFellForm>;
   readonly name: string;
   readonly spiele: readonly SpielState[];
 };
 
-@Injectable()
-export class KnieFellService {
-  readonly #fb = inject(NonNullableFormBuilder);
+export const mapKnieFellFormToState = (
+  form: FormGroup<KnieFellForm>
+): Observable<KnieFellState> => {
+  const name$ = rawValueChanges(form.controls.name, {
+    emitInitialValue: true,
+  });
+  const spiele$ = combineLatest(
+    form.controls.spiele.controls.map((spielForm) =>
+      mapSpielFormToState(spielForm)
+    )
+  );
 
-  readonly form: FormGroup<KnieFellForm>;
-  readonly state$: Observable<KnieFellState>;
-
-  constructor() {
-    this.form = createKnieFellForm(this.#fb, initialKnieFellValue);
-    const spielServices = this.form.controls.spiele.controls.map(
-      (spielForm) => new SpielService(spielForm)
-    );
-    const spiele$ = combineLatest(
-      spielServices.map((spielService) => spielService.state$)
-    );
-
-    const name$ = rawValueChanges(this.form.controls.name, {
-      emitInitialValue: true,
-    });
-    this.state$ = combineLatest([name$, spiele$]).pipe(
-      map(([name, spiele]) => ({ name, spiele }))
-    );
-  }
-}
-
-export const provideKnieFell = (): Provider[] => [KnieFellService];
+  return combineLatest([name$, spiele$]).pipe(
+    map(([name, spiele]) => ({ form, name, spiele }))
+  );
+};

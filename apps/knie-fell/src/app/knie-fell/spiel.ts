@@ -62,11 +62,3 @@ export const mapSpielFormToState = (
     }))
   );
 };
-
-export class SpielService {
-  readonly state$: Observable<SpielState>;
-
-  constructor(form: FormGroup<SpielForm>) {
-    this.state$ = mapSpielFormToState(form);
-  }
-}

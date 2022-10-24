@@ -1,7 +1,4 @@
-<ng-container
-  *ngIf="knieFellService.state$ | async as state"
-  [formGroup]="knieFellService.form"
->
+<ng-container *ngIf="state$ | async as state" [formGroup]="state.form">
   <div>
     <label class="kf-label">Name</label>
     <input type="text" formControlName="name" />
