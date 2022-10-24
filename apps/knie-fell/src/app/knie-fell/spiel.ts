@@ -10,20 +10,31 @@ import {
   ObererBlockValue,
   mapObererBlockFormToState,
 } from './oberer-block';
+import {
+  createUntererBlockForm,
+  initialUntererBlockValue,
+  mapUntererBlockFormToState,
+  UntererBlockForm,
+  UntererBlockState,
+  UntererBlockValue,
+} from './unterer-block';
 
 export type SpielValue = {
   readonly nummer: number;
   readonly obererBlock: ObererBlockValue;
+  readonly untererBlock: UntererBlockValue;
 };
 
 export const initialSpielValue = (nummer: number): SpielValue => ({
   nummer,
   obererBlock: initialObererBlockValue,
+  untererBlock: initialUntererBlockValue,
 });
 
 export type SpielForm = {
   nummer: FormControl<number>;
   obererBlock: FormGroup<ObererBlockForm>;
+  untererBlock: FormGroup<UntererBlockForm>;
 };
 
 export const createSpielForm = (
@@ -33,6 +44,7 @@ export const createSpielForm = (
   const form = fb.group<SpielForm>({
     nummer: fb.control(value.nummer),
     obererBlock: createObererBlockForm(fb, value.obererBlock),
+    untererBlock: createUntererBlockForm(fb, value.untererBlock),
   });
 
   return form;
@@ -42,6 +54,7 @@ export type SpielState = {
   readonly form: FormGroup<SpielForm>;
   readonly nummer: number;
   readonly obererBlock: ObererBlockState;
+  readonly untererBlock: UntererBlockState;
 };
 
 export const mapSpielFormToState = (
@@ -53,12 +66,16 @@ export const mapSpielFormToState = (
   const obererBlockState$ = mapObererBlockFormToState(
     form.controls.obererBlock
   );
+  const untererBlockState$ = mapUntererBlockFormToState(
+    form.controls.untererBlock
+  );
 
-  return combineLatest([nummer$, obererBlockState$]).pipe(
-    map(([nummer, obererBlock]) => ({
+  return combineLatest([nummer$, obererBlockState$, untererBlockState$]).pipe(
+    map(([nummer, obererBlock, untererBlock]) => ({
       form,
       nummer,
       obererBlock,
+      untererBlock,
     }))
   );
 };

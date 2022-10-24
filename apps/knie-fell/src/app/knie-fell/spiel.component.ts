@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ObererBlockComponent } from './oberer-block.component';
 
 import { SpielState } from './spiel';
+import { UntererBlockComponent } from './unterer-block.component';
 
 @Component({
   selector: 'kf-spiel',
@@ -11,7 +12,12 @@ import { SpielState } from './spiel';
   styleUrls: ['./styles.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, ReactiveFormsModule, ObererBlockComponent],
+  imports: [
+    NgIf,
+    ReactiveFormsModule,
+    ObererBlockComponent,
+    UntererBlockComponent,
+  ],
 })
 export class SpielComponent {
   @Input() state: SpielState | null = null;

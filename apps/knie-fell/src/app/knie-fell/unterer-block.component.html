@@ -1,0 +1,69 @@
+<ng-container *ngIf="state" [formGroup]="state.form">
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Dreierpasch</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="dreierpasch"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Viererpasch</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="viererpasch"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Full House</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="fullHouse"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">kleine Straße</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="kleineStrasse"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">große Straße</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="grosseStrasse"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Knie-Fell</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="knieFell"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Chance</label>
+    <input
+      class="kf-column kf-field-value"
+      type="number"
+      step="1"
+      formControlName="chance"
+    />
+  </div>
+  <div>
+    <label *ngIf="showLabels" class="kf-label">Gesamt unten</label>
+    <span class="kf-column kf-field-value">{{ state.gesamtUntererBlock }}</span>
+  </div>
+</ng-container>
