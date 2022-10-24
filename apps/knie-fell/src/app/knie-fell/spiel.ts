@@ -39,6 +39,7 @@ export const createSpielForm = (
 };
 
 export type SpielState = {
+  readonly form: FormGroup<SpielForm>;
   readonly nummer: number;
   readonly obererBlock: ObererBlockState;
 };
@@ -55,6 +56,7 @@ export const mapSpielFormToState = (
 
   return combineLatest([nummer$, obererBlockState$]).pipe(
     map(([nummer, obererBlock]) => ({
+      form,
       nummer,
       obererBlock,
     }))

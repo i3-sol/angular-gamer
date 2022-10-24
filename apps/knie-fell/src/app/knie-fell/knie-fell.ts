@@ -59,16 +59,15 @@ export class KnieFellService {
   readonly #fb = inject(NonNullableFormBuilder);
 
   readonly form: FormGroup<KnieFellForm>;
-  readonly spielServices: readonly SpielService[];
   readonly state$: Observable<KnieFellState>;
 
   constructor() {
     this.form = createKnieFellForm(this.#fb, initialKnieFellValue);
-    this.spielServices = this.form.controls.spiele.controls.map(
+    const spielServices = this.form.controls.spiele.controls.map(
       (spielForm) => new SpielService(spielForm)
     );
     const spiele$ = combineLatest(
-      this.spielServices.map((spielService) => spielService.state$)
+      spielServices.map((spielService) => spielService.state$)
     );
 
     const name$ = rawValueChanges(this.form.controls.name, {

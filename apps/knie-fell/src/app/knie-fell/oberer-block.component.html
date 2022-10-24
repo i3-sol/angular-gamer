@@ -1,4 +1,4 @@
-<ng-container *ngIf="state && obererBlockForm" [formGroup]="obererBlockForm">
+<ng-container *ngIf="state" [formGroup]="state.form">
   <div>
     <label *ngIf="showLabels" class="kf-label">Einser</label>
     <input

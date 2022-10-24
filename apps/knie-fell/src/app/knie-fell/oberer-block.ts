@@ -91,6 +91,7 @@ const obenBonus: ObererBlockBonus = 35;
 const obenBonusAb = 63;
 
 export type ObererBlockState = {
+  readonly form: FormGroup<ObererBlockForm>;
   readonly werte: ObererBlockValue;
   readonly gesamt: number;
   readonly bonus: ObererBlockBonus;
@@ -119,12 +120,16 @@ const calcObererBlockGesamtObererBlock = (
   return gesamt + bonus;
 };
 
-const calcObererBlock = (werte: ObererBlockValue): ObererBlockState => {
+const calcObererBlock = (
+  form: FormGroup<ObererBlockForm>,
+  werte: ObererBlockValue
+): ObererBlockState => {
   const gesamt = calcObererBlockGesamt(werte);
   const bonus = calcObererBlockBonus(gesamt);
   const gesamtObererBlock = calcObererBlockGesamtObererBlock(gesamt, bonus);
 
   return {
+    form,
     werte,
     gesamt,
     bonus,
@@ -137,5 +142,5 @@ export const mapObererBlockFormToState = (
 ): Observable<ObererBlockState> => {
   return rawValueChanges(form, {
     emitInitialValue: true,
-  }).pipe(map((werte) => calcObererBlock(werte)));
+  }).pipe(map((werte) => calcObererBlock(form, werte)));
 };

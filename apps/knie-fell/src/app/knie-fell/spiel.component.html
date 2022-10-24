@@ -1,8 +1,7 @@
-<ng-container *ngIf="state && spielForm" [formGroup]="spielForm">
+<ng-container *ngIf="state" [formGroup]="state.form">
   <div class="kf-label" *ngIf="showLabels"></div>
   <div class="kf-column">Spiel {{ state.nummer }}</div>
   <kf-oberer-block
-    formGroupName="obererBlock"
     [state]="state.obererBlock"
     [showLabels]="showLabels"
   ></kf-oberer-block>

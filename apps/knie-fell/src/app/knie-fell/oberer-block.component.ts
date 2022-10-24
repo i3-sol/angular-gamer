@@ -1,17 +1,8 @@
-import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Input,
-} from '@angular/core';
-import {
-  ControlContainer,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { ObererBlockForm, ObererBlockState } from './oberer-block';
+import { ObererBlockState } from './oberer-block';
 
 @Component({
   selector: 'kf-oberer-block',
@@ -19,15 +10,9 @@ import { ObererBlockForm, ObererBlockState } from './oberer-block';
   styleUrls: ['./styles.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, AsyncPipe, JsonPipe, ReactiveFormsModule],
+  imports: [NgIf, ReactiveFormsModule],
 })
 export class ObererBlockComponent {
-  readonly #controlContainer = inject(ControlContainer);
-
-  get obererBlockForm(): FormGroup<ObererBlockForm> | null {
-    return this.#controlContainer.control as FormGroup<ObererBlockForm> | null;
-  }
-
   @Input() state: ObererBlockState | null = null;
   @Input() showLabels = false;
 }

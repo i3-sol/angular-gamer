@@ -6,7 +6,7 @@
     <label class="kf-label">Name</label>
     <input type="text" formControlName="name" />
   </div>
-  <div class="kf-spiele-container" formArrayName="spiele">
+  <div class="kf-spiele-container">
     <ng-container
       *ngFor="
         let spiel of state.spiele;
@@ -18,7 +18,6 @@
       <kf-spiel
         [state]="state.spiele[spielIndex]"
         [showLabels]="firstSpiel"
-        [formGroupName]="spielIndex"
       ></kf-spiel>
     </ng-container>
   </div>
