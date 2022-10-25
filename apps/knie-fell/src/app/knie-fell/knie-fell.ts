@@ -59,8 +59,16 @@ export type KnieFellState = {
   readonly form: FormGroup<KnieFellForm>;
   readonly name: string;
   readonly spiele: readonly SpielState[];
+  readonly gesamtSpiele: number;
   readonly disableRemoveSpiel: boolean;
   readonly disableAddSpiel: boolean;
+};
+
+const calcGesamtSpiele = (spiele: readonly SpielState[]): number => {
+  return spiele.reduce(
+    (gesamtSpiele, spiel) => (gesamtSpiele += spiel.summeGesamt),
+    0
+  );
 };
 
 export const mapKnieFellFormToState = (
@@ -83,8 +91,10 @@ export const mapKnieFellFormToState = (
           mapSpielFormToState(spielForm)
         )
       )
-    )
+    ),
+    shareReplay()
   );
+  const gesamtSpiele$ = spiele$.pipe(map((spiele) => calcGesamtSpiele(spiele)));
   const disableRemoveSpiel$ = spieleLength$.pipe(
     map((spieleLength) => spieleLength <= minAnzahlSpiele)
   );
@@ -95,16 +105,20 @@ export const mapKnieFellFormToState = (
   return combineLatest([
     name$,
     spiele$,
+    gesamtSpiele$,
     disableRemoveSpiel$,
     disableAddSpiel$,
   ]).pipe(
-    map(([name, spiele, disableRemoveSpiel, disableAddSpiel]) => ({
-      form,
-      name,
-      spiele,
-      disableRemoveSpiel,
-      disableAddSpiel,
-    }))
+    map(
+      ([name, spiele, gesamtSpiele, disableRemoveSpiel, disableAddSpiel]) => ({
+        form,
+        name,
+        spiele,
+        gesamtSpiele,
+        disableRemoveSpiel,
+        disableAddSpiel,
+      })
+    )
   );
 };
 
