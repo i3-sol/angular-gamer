@@ -18,4 +18,20 @@
       ></kf-spiel>
     </ng-container>
   </div>
+  <div>
+    <button
+      type="button"
+      [disabled]="state.disableRemoveSpiel"
+      (click)="removeSpiel()"
+    >
+      -
+    </button>
+    <button
+      type="button"
+      [disabled]="state.disableAddSpiel"
+      (click)="addSpiel()"
+    >
+      +
+    </button>
+  </div>
 </ng-container>

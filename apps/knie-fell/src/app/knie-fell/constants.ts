@@ -1,5 +1,6 @@
 export const anzahlWuerfel = 5;
-export const anzahlSpiele = 6;
+export const minAnzahlSpiele = 1;
+export const maxAnzahlSpiele = 6;
 
 export type Feld = null | 0 | number;
 export const ohneEingabe: Feld = null;

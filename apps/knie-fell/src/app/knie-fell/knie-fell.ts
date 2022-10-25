@@ -5,11 +5,18 @@ import {
   NonNullableFormBuilder,
   Validators,
 } from '@angular/forms';
-import { combineLatest, map, Observable } from 'rxjs';
+import {
+  combineLatest,
+  distinctUntilChanged,
+  map,
+  Observable,
+  shareReplay,
+  switchMap,
+} from 'rxjs';
 
 import { rawValueChanges } from '@flensrocker/forms';
 
-import { anzahlSpiele } from './constants';
+import { maxAnzahlSpiele, minAnzahlSpiele } from './constants';
 import {
   createSpielForm,
   initialSpielValue,
@@ -26,7 +33,7 @@ export type KnieFellValue = {
 
 export const initialKnieFellValue: KnieFellValue = {
   name: '',
-  spiele: new Array(anzahlSpiele)
+  spiele: new Array(maxAnzahlSpiele)
     .fill(null)
     .map((_, index) => initialSpielValue(index + 1)),
 };
@@ -52,6 +59,8 @@ export type KnieFellState = {
   readonly form: FormGroup<KnieFellForm>;
   readonly name: string;
   readonly spiele: readonly SpielState[];
+  readonly disableRemoveSpiel: boolean;
+  readonly disableAddSpiel: boolean;
 };
 
 export const mapKnieFellFormToState = (
@@ -60,13 +69,60 @@ export const mapKnieFellFormToState = (
   const name$ = rawValueChanges(form.controls.name, {
     emitInitialValue: true,
   });
-  const spiele$ = combineLatest(
-    form.controls.spiele.controls.map((spielForm) =>
-      mapSpielFormToState(spielForm)
+  const spieleLength$ = rawValueChanges(form.controls.spiele, {
+    emitInitialValue: true,
+  }).pipe(
+    map(() => form.controls.spiele.controls.length),
+    distinctUntilChanged(),
+    shareReplay()
+  );
+  const spiele$ = spieleLength$.pipe(
+    switchMap(() =>
+      combineLatest(
+        form.controls.spiele.controls.map((spielForm) =>
+          mapSpielFormToState(spielForm)
+        )
+      )
     )
   );
-
-  return combineLatest([name$, spiele$]).pipe(
-    map(([name, spiele]) => ({ form, name, spiele }))
+  const disableRemoveSpiel$ = spieleLength$.pipe(
+    map((spieleLength) => spieleLength <= minAnzahlSpiele)
   );
+  const disableAddSpiel$ = spieleLength$.pipe(
+    map((spieleLength) => spieleLength >= maxAnzahlSpiele)
+  );
+
+  return combineLatest([
+    name$,
+    spiele$,
+    disableRemoveSpiel$,
+    disableAddSpiel$,
+  ]).pipe(
+    map(([name, spiele, disableRemoveSpiel, disableAddSpiel]) => ({
+      form,
+      name,
+      spiele,
+      disableRemoveSpiel,
+      disableAddSpiel,
+    }))
+  );
+};
+
+export const addSpiel = (
+  fb: NonNullableFormBuilder,
+  form: FormGroup<KnieFellForm>
+): void => {
+  const spieleLength = form.controls.spiele.length;
+  if (spieleLength < maxAnzahlSpiele) {
+    form.controls.spiele.push(
+      createSpielForm(fb, initialSpielValue(spieleLength + 1))
+    );
+  }
+};
+
+export const removeSpiel = (form: FormGroup<KnieFellForm>): void => {
+  const spieleLength = form.controls.spiele.length;
+  if (spieleLength > minAnzahlSpiele) {
+    form.controls.spiele.removeAt(spieleLength - 1);
+  }
 };
