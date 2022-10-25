@@ -3,22 +3,8 @@
     <label class="kf-label">Name</label>
     <input type="text" formControlName="name" />
   </div>
-  <div class="kf-spiele-container">
-    <ng-container
-      *ngFor="
-        let spiel of state.spiele;
-        let spielIndex = index;
-        let firstSpiel = first;
-        trackBy: trackSpiel
-      "
-    >
-      <kf-spiel
-        [state]="state.spiele[spielIndex]"
-        [showLabels]="firstSpiel"
-      ></kf-spiel>
-    </ng-container>
-  </div>
   <div>
+    <label class="kf-label">Anzahl Spiele</label>
     <button
       type="button"
       [disabled]="state.disableRemoveSpiel"
@@ -33,5 +19,20 @@
     >
       +
     </button>
+  </div>
+  <div class="kf-spiele-container">
+    <ng-container
+      *ngFor="
+        let spiel of state.spiele;
+        let spielIndex = index;
+        let firstSpiel = first;
+        trackBy: trackSpiel
+      "
+    >
+      <kf-spiel
+        [state]="state.spiele[spielIndex]"
+        [showLabels]="firstSpiel"
+      ></kf-spiel>
+    </ng-container>
   </div>
 </ng-container>
