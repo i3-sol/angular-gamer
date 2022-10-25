@@ -2,6 +2,12 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import {
+  erlaubtBeiFullHouse,
+  erlaubtBeiGrosseStrasse,
+  erlaubtBeiKleineStrasse,
+  erlaubtBeiKnieFell,
+} from './constants';
 import { UntererBlockState } from './unterer-block';
 
 @Component({
@@ -13,6 +19,11 @@ import { UntererBlockState } from './unterer-block';
   imports: [NgIf, ReactiveFormsModule],
 })
 export class UntererBlockComponent {
+  readonly erlaubtBeiFullHouse = erlaubtBeiFullHouse;
+  readonly erlaubtBeiKleineStrasse = erlaubtBeiKleineStrasse;
+  readonly erlaubtBeiGrosseStrasse = erlaubtBeiGrosseStrasse;
+  readonly erlaubtBeiKnieFell = erlaubtBeiKnieFell;
+
   @Input() state: UntererBlockState | null = null;
   @Input() showLabels = false;
 }

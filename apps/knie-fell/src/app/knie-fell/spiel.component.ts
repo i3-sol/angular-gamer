@@ -1,8 +1,8 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ObererBlockComponent } from './oberer-block.component';
 
+import { ObererBlockComponent } from './oberer-block.component';
 import { SpielState } from './spiel';
 import { UntererBlockComponent } from './unterer-block.component';
 
