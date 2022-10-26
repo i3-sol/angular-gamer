@@ -19,10 +19,10 @@ import { UntererBlockState } from './unterer-block';
   imports: [NgIf, ReactiveFormsModule],
 })
 export class UntererBlockComponent {
-  readonly erlaubtBeiFullHouse = erlaubtBeiFullHouse;
-  readonly erlaubtBeiKleineStrasse = erlaubtBeiKleineStrasse;
-  readonly erlaubtBeiGrosseStrasse = erlaubtBeiGrosseStrasse;
-  readonly erlaubtBeiKnieFell = erlaubtBeiKnieFell;
+  readonly erlaubtBeiFullHouse = erlaubtBeiFullHouse();
+  readonly erlaubtBeiKleineStrasse = erlaubtBeiKleineStrasse();
+  readonly erlaubtBeiGrosseStrasse = erlaubtBeiGrosseStrasse();
+  readonly erlaubtBeiKnieFell = erlaubtBeiKnieFell();
 
   @Input() state: UntererBlockState | null = null;
   @Input() showLabels = false;

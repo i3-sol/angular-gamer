@@ -21,12 +21,12 @@ import { ObererBlockState } from './oberer-block';
   imports: [NgIf, ReactiveFormsModule],
 })
 export class ObererBlockComponent {
-  readonly erlaubtBeiEinser = erlaubtBeiEinser;
-  readonly erlaubtBeiZweier = erlaubtBeiZweier;
-  readonly erlaubtBeiDreier = erlaubtBeiDreier;
-  readonly erlaubtBeiVierer = erlaubtBeiVierer;
-  readonly erlaubtBeiFuenfer = erlaubtBeiFuenfer;
-  readonly erlaubtBeiSechser = erlaubtBeiSechser;
+  readonly erlaubtBeiEinser = erlaubtBeiEinser();
+  readonly erlaubtBeiZweier = erlaubtBeiZweier();
+  readonly erlaubtBeiDreier = erlaubtBeiDreier();
+  readonly erlaubtBeiVierer = erlaubtBeiVierer();
+  readonly erlaubtBeiFuenfer = erlaubtBeiFuenfer();
+  readonly erlaubtBeiSechser = erlaubtBeiSechser();
 
   @Input() state: ObererBlockState | null = null;
   @Input() showLabels = false;
