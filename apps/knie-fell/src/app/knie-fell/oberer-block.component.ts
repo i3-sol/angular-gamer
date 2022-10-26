@@ -11,6 +11,7 @@ import {
   erlaubtBeiZweier,
 } from './constants';
 import { ObererBlockState } from './oberer-block';
+import { SelectComponent } from './select.component';
 
 @Component({
   selector: 'kf-oberer-block',
@@ -18,15 +19,15 @@ import { ObererBlockState } from './oberer-block';
   styleUrls: ['./styles.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, ReactiveFormsModule],
+  imports: [NgIf, ReactiveFormsModule, SelectComponent],
 })
 export class ObererBlockComponent {
-  readonly erlaubtBeiEinser = erlaubtBeiEinser();
-  readonly erlaubtBeiZweier = erlaubtBeiZweier();
-  readonly erlaubtBeiDreier = erlaubtBeiDreier();
-  readonly erlaubtBeiVierer = erlaubtBeiVierer();
-  readonly erlaubtBeiFuenfer = erlaubtBeiFuenfer();
-  readonly erlaubtBeiSechser = erlaubtBeiSechser();
+  readonly erlaubtBeiEinser = erlaubtBeiEinser;
+  readonly erlaubtBeiZweier = erlaubtBeiZweier;
+  readonly erlaubtBeiDreier = erlaubtBeiDreier;
+  readonly erlaubtBeiVierer = erlaubtBeiVierer;
+  readonly erlaubtBeiFuenfer = erlaubtBeiFuenfer;
+  readonly erlaubtBeiSechser = erlaubtBeiSechser;
 
   @Input() state: ObererBlockState | null = null;
   @Input() showLabels = false;

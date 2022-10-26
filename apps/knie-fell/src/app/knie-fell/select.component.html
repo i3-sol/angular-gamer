@@ -1,0 +1,10 @@
+<select
+  #select
+  class="kf-select"
+  (change)="onChange($event)"
+  (blur)="onTouched()"
+>
+  <option [value]="ohneEingabe">&nbsp;</option>
+  <option *ngFor="let wert of werte" [value]="wert">{{ wert }}</option>
+  <option [value]="gestrichen">/</option>
+</select>

@@ -8,6 +8,7 @@ import {
   erlaubtBeiKleineStrasse,
   erlaubtBeiKnieFell,
 } from './constants';
+import { SelectComponent } from './select.component';
 import { UntererBlockState } from './unterer-block';
 
 @Component({
@@ -16,13 +17,13 @@ import { UntererBlockState } from './unterer-block';
   styleUrls: ['./styles.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, ReactiveFormsModule],
+  imports: [NgIf, ReactiveFormsModule, SelectComponent],
 })
 export class UntererBlockComponent {
-  readonly erlaubtBeiFullHouse = erlaubtBeiFullHouse();
-  readonly erlaubtBeiKleineStrasse = erlaubtBeiKleineStrasse();
-  readonly erlaubtBeiGrosseStrasse = erlaubtBeiGrosseStrasse();
-  readonly erlaubtBeiKnieFell = erlaubtBeiKnieFell();
+  readonly erlaubtBeiFullHouse = erlaubtBeiFullHouse;
+  readonly erlaubtBeiKleineStrasse = erlaubtBeiKleineStrasse;
+  readonly erlaubtBeiGrosseStrasse = erlaubtBeiGrosseStrasse;
+  readonly erlaubtBeiKnieFell = erlaubtBeiKnieFell;
 
   @Input() state: UntererBlockState | null = null;
   @Input() showLabels = false;

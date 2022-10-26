@@ -19,39 +19,35 @@
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">Full House</label>
-    <input
+    <kf-select
       class="kf-column kf-field-value"
-      type="number"
-      step="1"
+      [werte]="erlaubtBeiFullHouse"
       formControlName="fullHouse"
-    />
+    ></kf-select>
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">kleine Straße</label>
-    <input
+    <kf-select
       class="kf-column kf-field-value"
-      type="number"
-      step="1"
+      [werte]="erlaubtBeiKleineStrasse"
       formControlName="kleineStrasse"
-    />
+    ></kf-select>
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">große Straße</label>
-    <input
+    <kf-select
       class="kf-column kf-field-value"
-      type="number"
-      step="1"
+      [werte]="erlaubtBeiGrosseStrasse"
       formControlName="grosseStrasse"
-    />
+    ></kf-select>
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">Knie-Fell</label>
-    <input
+    <kf-select
       class="kf-column kf-field-value"
-      type="number"
-      step="1"
+      [werte]="erlaubtBeiKnieFell"
       formControlName="knieFell"
-    />
+    ></kf-select>
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">Chance</label>

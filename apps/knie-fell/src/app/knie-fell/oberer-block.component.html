@@ -1,57 +1,51 @@
 <ng-container *ngIf="state" [formGroup]="state.form">
   <div>
     <label *ngIf="showLabels" class="kf-label">Einser</label>
-    <input
+    <kf-select
       class="kf-column kf-field-value"
-      type="number"
-      step="1"
+      [werte]="erlaubtBeiEinser"
       formControlName="einser"
-    />
+    ></kf-select>
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">Zweier</label>
-    <input
+    <kf-select
       class="kf-column kf-field-value"
-      type="number"
-      step="1"
+      [werte]="erlaubtBeiZweier"
       formControlName="zweier"
-    />
+    ></kf-select>
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">Dreier</label>
-    <input
+    <kf-select
       class="kf-column kf-field-value"
-      type="number"
-      step="1"
+      [werte]="erlaubtBeiDreier"
       formControlName="dreier"
-    />
+    ></kf-select>
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">Vierer</label>
-    <input
+    <kf-select
       class="kf-column kf-field-value"
-      type="number"
-      step="1"
+      [werte]="erlaubtBeiVierer"
       formControlName="vierer"
-    />
+    ></kf-select>
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">Fünfer</label>
-    <input
+    <kf-select
       class="kf-column kf-field-value"
-      type="number"
-      step="1"
+      [werte]="erlaubtBeiFuenfer"
       formControlName="fuenfer"
-    />
+    ></kf-select>
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">Sechser</label>
-    <input
+    <kf-select
       class="kf-column kf-field-value"
-      type="number"
-      step="1"
+      [werte]="erlaubtBeiSechser"
       formControlName="sechser"
-    />
+    ></kf-select>
   </div>
   <div>
     <label *ngIf="showLabels" class="kf-label">Gesamt</label>
