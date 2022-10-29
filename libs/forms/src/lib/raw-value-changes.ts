@@ -14,9 +14,11 @@ export const rawValueChanges = <TControl, TRawValue extends TControl>(
   options?: RawValueChangesOptions
 ): Observable<TRawValue> => {
   const actualOptions = { ...RAW_VALUE_CHANGES_OPTIONS_DEFAULTS, ...options };
-  const initialValue$ = actualOptions.replayCurrentValue ? of(null) : EMPTY;
 
-  return concat(initialValue$, form.valueChanges).pipe(
+  const initialTrigger$ = actualOptions.replayCurrentValue ? of(null) : EMPTY;
+  const changeTrigger$ = form.valueChanges;
+
+  return concat(initialTrigger$, changeTrigger$).pipe(
     map(() => form.getRawValue())
   );
 };
