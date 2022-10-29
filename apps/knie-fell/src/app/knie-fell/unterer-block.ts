@@ -1,7 +1,5 @@
 import {
   AbstractControl,
-  FormControl,
-  FormGroup,
   NonNullableFormBuilder,
   ValidationErrors,
   ValidatorFn,
@@ -9,7 +7,7 @@ import {
 } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 
-import { rawValueChanges } from '@flensrocker/forms';
+import { FormGroupOf, FormOf, rawValueChanges } from '@flensrocker/forms';
 
 import { Feld, gestrichen, getFeldValue, ohneEingabe } from './constants';
 
@@ -22,6 +20,8 @@ export type UntererBlockValue = {
   readonly knieFell: Feld;
   readonly chance: Feld;
 };
+export type UntererBlockForm = FormOf<UntererBlockValue>;
+export type UntererBlockFormGroup = FormGroupOf<UntererBlockValue>;
 
 export const initialUntererBlockValue: UntererBlockValue = {
   dreierpasch: ohneEingabe,
@@ -31,16 +31,6 @@ export const initialUntererBlockValue: UntererBlockValue = {
   grosseStrasse: ohneEingabe,
   knieFell: ohneEingabe,
   chance: ohneEingabe,
-};
-
-export type UntererBlockForm = {
-  dreierpasch: FormControl<Feld>;
-  viererpasch: FormControl<Feld>;
-  fullHouse: FormControl<Feld>;
-  kleineStrasse: FormControl<Feld>;
-  grosseStrasse: FormControl<Feld>;
-  knieFell: FormControl<Feld>;
-  chance: FormControl<Feld>;
 };
 
 const exaktGleich = (erlaubt: number): ValidatorFn => {
@@ -62,7 +52,7 @@ const exaktGleich = (erlaubt: number): ValidatorFn => {
 export const createUntererBlockForm = (
   fb: NonNullableFormBuilder,
   value: UntererBlockValue
-): FormGroup<UntererBlockForm> => {
+): UntererBlockFormGroup => {
   const form = fb.group<UntererBlockForm>({
     dreierpasch: fb.control(value.dreierpasch, {
       validators: [Validators.min(5), Validators.max(30)],
@@ -87,7 +77,7 @@ export const createUntererBlockForm = (
 };
 
 export type UntererBlockState = {
-  readonly form: FormGroup<UntererBlockForm>;
+  readonly form: UntererBlockFormGroup;
   readonly werte: UntererBlockValue;
   readonly gesamtUntererBlock: number;
 };
@@ -105,7 +95,7 @@ const calcUntererBlockGesamt = (werte: UntererBlockValue): number => {
 };
 
 const calcUntererBlock = (
-  form: FormGroup<UntererBlockForm>,
+  form: UntererBlockFormGroup,
   werte: UntererBlockValue
 ): UntererBlockState => {
   const gesamtUntererBlock = calcUntererBlockGesamt(werte);
@@ -118,7 +108,7 @@ const calcUntererBlock = (
 };
 
 export const mapUntererBlockFormToState = (
-  form: FormGroup<UntererBlockForm>
+  form: UntererBlockFormGroup
 ): Observable<UntererBlockState> => {
   return rawValueChanges(form, {
     replayCurrentValue: true,

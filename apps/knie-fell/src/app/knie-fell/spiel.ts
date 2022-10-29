@@ -1,12 +1,11 @@
-import { FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { combineLatest, map, Observable } from 'rxjs';
 
-import { rawValueChanges } from '@flensrocker/forms';
+import { FormGroupOf, FormOf, rawValueChanges } from '@flensrocker/forms';
 
 import {
   createObererBlockForm,
   initialObererBlockValue,
-  ObererBlockForm,
   ObererBlockState,
   ObererBlockValue,
   mapObererBlockFormToState,
@@ -15,7 +14,6 @@ import {
   createUntererBlockForm,
   initialUntererBlockValue,
   mapUntererBlockFormToState,
-  UntererBlockForm,
   UntererBlockState,
   UntererBlockValue,
 } from './unterer-block';
@@ -25,6 +23,8 @@ export type SpielValue = {
   readonly obererBlock: ObererBlockValue;
   readonly untererBlock: UntererBlockValue;
 };
+export type SpielForm = FormOf<SpielValue>;
+export type SpielFormGroup = FormGroupOf<SpielValue>;
 
 export const initialSpielValue = (nummer: number): SpielValue => ({
   nummer,
@@ -32,16 +32,10 @@ export const initialSpielValue = (nummer: number): SpielValue => ({
   untererBlock: initialUntererBlockValue,
 });
 
-export type SpielForm = {
-  nummer: FormControl<number>;
-  obererBlock: FormGroup<ObererBlockForm>;
-  untererBlock: FormGroup<UntererBlockForm>;
-};
-
 export const createSpielForm = (
   fb: NonNullableFormBuilder,
   value: SpielValue
-): FormGroup<SpielForm> => {
+): SpielFormGroup => {
   const form = fb.group<SpielForm>({
     nummer: fb.control(value.nummer),
     obererBlock: createObererBlockForm(fb, value.obererBlock),
@@ -52,7 +46,7 @@ export const createSpielForm = (
 };
 
 export type SpielState = {
-  readonly form: FormGroup<SpielForm>;
+  readonly form: SpielFormGroup;
   readonly nummer: number;
   readonly obererBlock: ObererBlockState;
   readonly untererBlock: UntererBlockState;
@@ -60,7 +54,7 @@ export type SpielState = {
 };
 
 export const mapSpielFormToState = (
-  form: FormGroup<SpielForm>
+  form: SpielFormGroup
 ): Observable<SpielState> => {
   const nummer$ = rawValueChanges(form.controls.nummer, {
     replayCurrentValue: true,

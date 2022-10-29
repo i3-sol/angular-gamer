@@ -1,10 +1,4 @@
-import {
-  FormArray,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-  Validators,
-} from '@angular/forms';
+import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import {
   combineLatest,
   distinctUntilChanged,
@@ -14,14 +8,13 @@ import {
   switchMap,
 } from 'rxjs';
 
-import { rawValueChanges } from '@flensrocker/forms';
+import { FormGroupOf, FormOf, rawValueChanges } from '@flensrocker/forms';
 
 import { maxAnzahlSpiele, minAnzahlSpiele } from './constants';
 import {
   createSpielForm,
   initialSpielValue,
   mapSpielFormToState,
-  SpielForm,
   SpielState,
   SpielValue,
 } from './spiel';
@@ -30,6 +23,8 @@ export type KnieFellValue = {
   readonly name: string;
   readonly spiele: readonly SpielValue[];
 };
+export type KnieFellForm = FormOf<KnieFellValue>;
+export type KnieFellFormGroup = FormGroupOf<KnieFellValue>;
 
 export const initialKnieFellValue: KnieFellValue = {
   name: '',
@@ -38,15 +33,10 @@ export const initialKnieFellValue: KnieFellValue = {
     .map((_, index) => initialSpielValue(index + 1)),
 };
 
-export type KnieFellForm = {
-  name: FormControl<string>;
-  spiele: FormArray<FormGroup<SpielForm>>;
-};
-
 export const createKnieFellForm = (
   fb: NonNullableFormBuilder,
   value: KnieFellValue
-): FormGroup<KnieFellForm> => {
+): KnieFellFormGroup => {
   const form = fb.group<KnieFellForm>({
     name: fb.control(value.name, { validators: Validators.required }),
     spiele: fb.array(value.spiele.map((spiel) => createSpielForm(fb, spiel))),
@@ -56,7 +46,7 @@ export const createKnieFellForm = (
 };
 
 export type KnieFellState = {
-  readonly form: FormGroup<KnieFellForm>;
+  readonly form: KnieFellFormGroup;
   readonly name: string;
   readonly spiele: readonly SpielState[];
   readonly gesamtSpiele: number;
@@ -72,7 +62,7 @@ const calcGesamtSpiele = (spiele: readonly SpielState[]): number => {
 };
 
 export const mapKnieFellFormToState = (
-  form: FormGroup<KnieFellForm>
+  form: KnieFellFormGroup
 ): Observable<KnieFellState> => {
   const name$ = rawValueChanges(form.controls.name, {
     replayCurrentValue: true,
@@ -124,7 +114,7 @@ export const mapKnieFellFormToState = (
 
 export const addSpiel = (
   fb: NonNullableFormBuilder,
-  form: FormGroup<KnieFellForm>
+  form: KnieFellFormGroup
 ): void => {
   const spieleLength = form.controls.spiele.length;
   if (spieleLength < maxAnzahlSpiele) {
@@ -134,7 +124,7 @@ export const addSpiel = (
   }
 };
 
-export const removeSpiel = (form: FormGroup<KnieFellForm>): void => {
+export const removeSpiel = (form: KnieFellFormGroup): void => {
   const spieleLength = form.controls.spiele.length;
   if (spieleLength > minAnzahlSpiele) {
     form.controls.spiele.removeAt(spieleLength - 1);

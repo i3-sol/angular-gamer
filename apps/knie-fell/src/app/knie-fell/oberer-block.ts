@@ -1,14 +1,12 @@
 import {
   AbstractControl,
-  FormControl,
-  FormGroup,
   NonNullableFormBuilder,
   ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 
-import { rawValueChanges } from '@flensrocker/forms';
+import { FormGroupOf, FormOf, rawValueChanges } from '@flensrocker/forms';
 
 import {
   anzahlWuerfel,
@@ -26,6 +24,8 @@ export type ObererBlockValue = {
   readonly fuenfer: Feld;
   readonly sechser: Feld;
 };
+export type ObererBlockForm = FormOf<ObererBlockValue>;
+export type ObererBlockFormGroup = FormGroupOf<ObererBlockValue>;
 
 export const initialObererBlockValue: ObererBlockValue = {
   einser: ohneEingabe,
@@ -34,15 +34,6 @@ export const initialObererBlockValue: ObererBlockValue = {
   vierer: ohneEingabe,
   fuenfer: ohneEingabe,
   sechser: ohneEingabe,
-};
-
-export type ObererBlockForm = {
-  readonly einser: FormControl<Feld>;
-  readonly zweier: FormControl<Feld>;
-  readonly dreier: FormControl<Feld>;
-  readonly vierer: FormControl<Feld>;
-  readonly fuenfer: FormControl<Feld>;
-  readonly sechser: FormControl<Feld>;
 };
 
 const vielfachesVon = (faktor: number): ValidatorFn => {
@@ -72,7 +63,7 @@ const vielfachesVon = (faktor: number): ValidatorFn => {
 export const createObererBlockForm = (
   fb: NonNullableFormBuilder,
   value: ObererBlockValue
-): FormGroup<ObererBlockForm> => {
+): ObererBlockFormGroup => {
   const form = fb.group<ObererBlockForm>({
     einser: fb.control(value.einser, { validators: [vielfachesVon(1)] }),
     zweier: fb.control(value.zweier, { validators: [vielfachesVon(2)] }),
@@ -91,7 +82,7 @@ const obenBonus: ObererBlockBonus = 35;
 const obenBonusAb = 63;
 
 export type ObererBlockState = {
-  readonly form: FormGroup<ObererBlockForm>;
+  readonly form: ObererBlockFormGroup;
   readonly werte: ObererBlockValue;
   readonly gesamt: number;
   readonly bonus: ObererBlockBonus;
@@ -121,7 +112,7 @@ const calcObererBlockGesamtObererBlock = (
 };
 
 const calcObererBlock = (
-  form: FormGroup<ObererBlockForm>,
+  form: ObererBlockFormGroup,
   werte: ObererBlockValue
 ): ObererBlockState => {
   const gesamt = calcObererBlockGesamt(werte);
@@ -138,7 +129,7 @@ const calcObererBlock = (
 };
 
 export const mapObererBlockFormToState = (
-  form: FormGroup<ObererBlockForm>
+  form: ObererBlockFormGroup
 ): Observable<ObererBlockState> => {
   return rawValueChanges(form, {
     replayCurrentValue: true,
