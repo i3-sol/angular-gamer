@@ -1,4 +1,9 @@
-<ng-container *ngIf="state$ | async as state" [formGroup]="state.form">
+<form
+  *ngIf="state$ | async as state"
+  [formGroup]="state.form"
+  frFormCacheKey="KnieFell"
+  (cachedValue)="setCachedValue($event)"
+>
   <div>
     <label class="kf-label">Name</label>
     <input type="text" formControlName="name" />
@@ -39,4 +44,4 @@
     <label class="kf-label">Gesamtsumme</label>
     <span class="kf-column kf-field-value">{{ state.gesamtSpiele }}</span>
   </div>
-</ng-container>
+</form>

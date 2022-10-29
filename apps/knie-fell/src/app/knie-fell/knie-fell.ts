@@ -22,7 +22,7 @@ import {
 
 export type KnieFellValue = {
   readonly name: string;
-  readonly spiele: readonly SpielValue[];
+  readonly spiele: SpielValue[];
 };
 export type KnieFellForm = FormOf<KnieFellValue>;
 export type KnieFellFormGroup = FormGroupOf<KnieFellValue>;

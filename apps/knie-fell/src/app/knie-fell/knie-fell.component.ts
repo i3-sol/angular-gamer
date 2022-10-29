@@ -1,11 +1,13 @@
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FrFormCacheDirective } from '@flensrocker/forms';
 
 import {
   addSpiel,
   createKnieFellForm,
   initialKnieFellValue,
+  KnieFellValue,
   mapKnieFellFormToState,
   removeSpiel,
 } from './knie-fell';
@@ -18,13 +20,35 @@ import { SpielComponent } from './spiel.component';
   styleUrls: ['./styles.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, NgForOf, AsyncPipe, ReactiveFormsModule, SpielComponent],
+  imports: [
+    NgIf,
+    NgForOf,
+    AsyncPipe,
+    ReactiveFormsModule,
+    FrFormCacheDirective,
+    SpielComponent,
+  ],
 })
 export class KnieFellComponent {
   readonly #fb = inject(NonNullableFormBuilder);
   readonly #form = createKnieFellForm(this.#fb, initialKnieFellValue);
 
   readonly state$ = mapKnieFellFormToState(this.#form);
+
+  setCachedValue(cachedValue: KnieFellValue): void {
+    if (cachedValue.spiele.length > 0) {
+      while (this.#form.controls.spiele.length < cachedValue.spiele.length) {
+        this.addSpiel();
+      }
+      while (this.#form.controls.spiele.length > cachedValue.spiele.length) {
+        this.removeSpiel();
+      }
+      // trigger change detection
+      setTimeout(() => {
+        this.#form.setValue(cachedValue);
+      }, 0);
+    }
+  }
 
   trackSpiel(_index: number, spiel: SpielState): number {
     return spiel.nummer;

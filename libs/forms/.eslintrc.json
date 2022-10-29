@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "flensrocker",
+            "prefix": "fr",
             "style": "camelCase"
           }
         ],
@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "flensrocker",
+            "prefix": "fr",
             "style": "kebab-case"
           }
         ]
