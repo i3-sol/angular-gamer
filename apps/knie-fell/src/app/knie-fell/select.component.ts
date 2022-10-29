@@ -9,13 +9,17 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import {
-  Feld,
-  feldToString,
-  gestrichen,
-  ohneEingabe,
-  parseFeldValue,
-} from './constants';
+import { Feld, gestrichen, ohneEingabe } from './constants';
+
+const selectValueToFeld = (value: string | null): Feld => {
+  return value == null || value === '' || value === 'null'
+    ? null
+    : Number.parseInt(value);
+};
+
+const feldToSelectValue = (value: Feld): string => {
+  return value == ohneEingabe ? 'null' : `${value}`;
+};
 
 @Component({
   selector: 'kf-select',
@@ -45,7 +49,9 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.select != null) {
-      this.select.nativeElement.value = feldToString(this.#lastValueWritten);
+      this.select.nativeElement.value = feldToSelectValue(
+        this.#lastValueWritten
+      );
       if (this.#lastDisabled != null) {
         this.select.nativeElement.disabled = this.#lastDisabled;
       }
@@ -55,7 +61,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit {
   writeValue(obj: Feld): void {
     this.#lastValueWritten = obj;
     if (this.select != null) {
-      this.select.nativeElement.value = feldToString(obj);
+      this.select.nativeElement.value = feldToSelectValue(obj);
     }
   }
 
@@ -69,7 +75,7 @@ export class SelectComponent implements ControlValueAccessor, AfterViewInit {
 
   onChange(_event: unknown): void {
     if (this.select != null) {
-      const value = parseFeldValue(this.select.nativeElement.value);
+      const value = selectValueToFeld(this.select.nativeElement.value);
       this.#onChange(value);
     }
   }

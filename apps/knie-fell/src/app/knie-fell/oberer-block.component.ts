@@ -9,8 +9,8 @@ import {
   erlaubtBeiSechser,
   erlaubtBeiVierer,
   erlaubtBeiZweier,
-} from './constants';
-import { ObererBlockState } from './oberer-block';
+  ObererBlockState,
+} from './oberer-block';
 import { SelectComponent } from './select.component';
 
 @Component({

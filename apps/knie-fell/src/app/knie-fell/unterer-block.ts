@@ -33,6 +33,11 @@ export const initialUntererBlockValue: UntererBlockValue = {
   chance: ohneEingabe,
 };
 
+export const erlaubtBeiFullHouse = [25];
+export const erlaubtBeiKleineStrasse = [30];
+export const erlaubtBeiGrosseStrasse = [40];
+export const erlaubtBeiKnieFell = [50];
+
 const exaktGleich = (erlaubt: number): ValidatorFn => {
   return (control: AbstractControl): ValidationErrors | null => {
     const value = control.value;

@@ -36,6 +36,19 @@ export const initialObererBlockValue: ObererBlockValue = {
   sechser: ohneEingabe,
 };
 
+const getErlaubteWerteBeiObererBlock = (faktor: number): readonly Feld[] => {
+  return new Array(anzahlWuerfel)
+    .fill(null)
+    .map((_, index) => (index + 1) * faktor);
+};
+
+export const erlaubtBeiEinser = getErlaubteWerteBeiObererBlock(1);
+export const erlaubtBeiZweier = getErlaubteWerteBeiObererBlock(2);
+export const erlaubtBeiDreier = getErlaubteWerteBeiObererBlock(3);
+export const erlaubtBeiVierer = getErlaubteWerteBeiObererBlock(4);
+export const erlaubtBeiFuenfer = getErlaubteWerteBeiObererBlock(5);
+export const erlaubtBeiSechser = getErlaubteWerteBeiObererBlock(6);
+
 const vielfachesVon = (faktor: number): ValidatorFn => {
   const maximum = faktor * anzahlWuerfel;
 

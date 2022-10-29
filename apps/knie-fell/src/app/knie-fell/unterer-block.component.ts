@@ -2,14 +2,14 @@ import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { SelectComponent } from './select.component';
 import {
   erlaubtBeiFullHouse,
   erlaubtBeiGrosseStrasse,
   erlaubtBeiKleineStrasse,
   erlaubtBeiKnieFell,
-} from './constants';
-import { SelectComponent } from './select.component';
-import { UntererBlockState } from './unterer-block';
+  UntererBlockState,
+} from './unterer-block';
 
 @Component({
   selector: 'kf-unterer-block',
