@@ -141,6 +141,6 @@ export const mapObererBlockFormToState = (
   form: FormGroup<ObererBlockForm>
 ): Observable<ObererBlockState> => {
   return rawValueChanges(form, {
-    emitInitialValue: true,
+    replayCurrentValue: true,
   }).pipe(map((werte) => calcObererBlock(form, werte)));
 };

@@ -75,10 +75,10 @@ export const mapKnieFellFormToState = (
   form: FormGroup<KnieFellForm>
 ): Observable<KnieFellState> => {
   const name$ = rawValueChanges(form.controls.name, {
-    emitInitialValue: true,
+    replayCurrentValue: true,
   });
   const spieleLength$ = rawValueChanges(form.controls.spiele, {
-    emitInitialValue: true,
+    replayCurrentValue: true,
   }).pipe(
     map(() => form.controls.spiele.controls.length),
     distinctUntilChanged(),

@@ -1,12 +1,12 @@
 import { AbstractControl } from '@angular/forms';
-import { concat, defer, map, Observable, of } from 'rxjs';
+import { concat, EMPTY, map, Observable, of } from 'rxjs';
 
 export type RawValueChangesOptions = {
-  emitInitialValue?: boolean;
+  replayCurrentValue?: boolean;
 };
 
 export const RAW_VALUE_CHANGES_OPTIONS_DEFAULTS: RawValueChangesOptions = {
-  emitInitialValue: false,
+  replayCurrentValue: false,
 };
 
 export const rawValueChanges = <TControl, TRawValue extends TControl>(
@@ -14,12 +14,9 @@ export const rawValueChanges = <TControl, TRawValue extends TControl>(
   options?: RawValueChangesOptions
 ): Observable<TRawValue> => {
   const actualOptions = { ...RAW_VALUE_CHANGES_OPTIONS_DEFAULTS, ...options };
-  const formValueChanges = actualOptions.emitInitialValue
-    ? concat(
-        defer(() => of(form.value)),
-        form.valueChanges
-      )
-    : form.valueChanges;
+  const initialValue$ = actualOptions.replayCurrentValue ? of(null) : EMPTY;
 
-  return formValueChanges.pipe(map(() => form.getRawValue()));
+  return concat(initialValue$, form.valueChanges).pipe(
+    map(() => form.getRawValue())
+  );
 };

@@ -63,7 +63,7 @@ export const mapSpielFormToState = (
   form: FormGroup<SpielForm>
 ): Observable<SpielState> => {
   const nummer$ = rawValueChanges(form.controls.nummer, {
-    emitInitialValue: true,
+    replayCurrentValue: true,
   });
   const obererBlockState$ = mapObererBlockFormToState(
     form.controls.obererBlock

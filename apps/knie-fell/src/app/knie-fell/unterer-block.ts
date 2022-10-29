@@ -121,6 +121,6 @@ export const mapUntererBlockFormToState = (
   form: FormGroup<UntererBlockForm>
 ): Observable<UntererBlockState> => {
   return rawValueChanges(form, {
-    emitInitialValue: true,
+    replayCurrentValue: true,
   }).pipe(map((werte) => calcUntererBlock(form, werte)));
 };
