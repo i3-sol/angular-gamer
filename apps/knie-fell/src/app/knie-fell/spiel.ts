@@ -1,5 +1,5 @@
 import { NonNullableFormBuilder } from '@angular/forms';
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, map, Observable, of, shareReplay } from 'rxjs';
 
 import { FormGroupOf, FormOf, rawValueChanges } from '@flensrocker/forms';
 
@@ -61,10 +61,11 @@ export const mapSpielFormToState = (
   });
   const obererBlockState$ = mapObererBlockFormToState(
     form.controls.obererBlock
-  );
+  ).pipe(shareReplay());
   const untererBlockState$ = mapUntererBlockFormToState(
     form.controls.untererBlock
-  );
+  ).pipe(shareReplay());
+
   const summeGesamt$ = combineLatest([
     obererBlockState$.pipe(map((obererBlock) => obererBlock.gesamtObererBlock)),
     untererBlockState$.pipe(
@@ -77,18 +78,11 @@ export const mapSpielFormToState = (
     )
   );
 
-  return combineLatest([
-    nummer$,
-    obererBlockState$,
-    untererBlockState$,
-    summeGesamt$,
-  ]).pipe(
-    map(([nummer, obererBlock, untererBlock, summeGesamt]) => ({
-      form,
-      nummer,
-      obererBlock,
-      untererBlock,
-      summeGesamt,
-    }))
-  );
+  return combineLatest({
+    form: of(form),
+    nummer: nummer$,
+    obererBlock: obererBlockState$,
+    untererBlock: untererBlockState$,
+    summeGesamt: summeGesamt$,
+  });
 };

@@ -4,6 +4,7 @@ import {
   distinctUntilChanged,
   map,
   Observable,
+  of,
   shareReplay,
   switchMap,
 } from 'rxjs';
@@ -92,24 +93,14 @@ export const mapKnieFellFormToState = (
     map((spieleLength) => spieleLength >= maxAnzahlSpiele)
   );
 
-  return combineLatest([
-    name$,
-    spiele$,
-    gesamtSpiele$,
-    disableRemoveSpiel$,
-    disableAddSpiel$,
-  ]).pipe(
-    map(
-      ([name, spiele, gesamtSpiele, disableRemoveSpiel, disableAddSpiel]) => ({
-        form,
-        name,
-        spiele,
-        gesamtSpiele,
-        disableRemoveSpiel,
-        disableAddSpiel,
-      })
-    )
-  );
+  return combineLatest({
+    form: of(form),
+    name: name$,
+    spiele: spiele$,
+    gesamtSpiele: gesamtSpiele$,
+    disableRemoveSpiel: disableRemoveSpiel$,
+    disableAddSpiel: disableAddSpiel$,
+  });
 };
 
 export const addSpiel = (
