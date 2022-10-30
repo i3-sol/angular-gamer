@@ -1,8 +1,8 @@
 <form
   *ngIf="state$ | async as state"
   [formGroup]="state.form"
-  frFormCacheKey="KnieFell"
-  (cachedValue)="setCachedValue($event)"
+  frFormCache="KnieFell"
+  (cacheValueLoaded)="setCachedValue($event)"
 >
   <div>
     <label class="kf-label">Name</label>

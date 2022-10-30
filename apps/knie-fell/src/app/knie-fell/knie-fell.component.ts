@@ -2,7 +2,7 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 
-import { FrFormCacheDirective } from '@flensrocker/forms';
+import { FrFormCacheDirective, FrFormCacheValue } from '@flensrocker/forms';
 
 import {
   addSpiel,
@@ -36,17 +36,21 @@ export class KnieFellComponent {
 
   readonly state$ = mapKnieFellFormToState(this.#form);
 
-  setCachedValue(cachedValue: KnieFellValue): void {
-    if (cachedValue.spiele.length > 0) {
-      while (this.#form.controls.spiele.length < cachedValue.spiele.length) {
+  setCachedValue(cacheValue: FrFormCacheValue<KnieFellValue>): void {
+    if (cacheValue.value.spiele.length > 0) {
+      while (
+        this.#form.controls.spiele.length < cacheValue.value.spiele.length
+      ) {
         this.addSpiel();
       }
-      while (this.#form.controls.spiele.length > cachedValue.spiele.length) {
+      while (
+        this.#form.controls.spiele.length > cacheValue.value.spiele.length
+      ) {
         this.removeSpiel();
       }
       // trigger change detection
       setTimeout(() => {
-        this.#form.setValue(cachedValue);
+        this.#form.setValue(cacheValue.value);
       }, 0);
     }
   }
