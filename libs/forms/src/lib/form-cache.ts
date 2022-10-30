@@ -11,11 +11,14 @@ import {
 import { ControlContainer } from '@angular/forms';
 import {
   BehaviorSubject,
+  catchError,
   combineLatest,
   debounceTime,
-  EMPTY,
+  defer,
   filter,
+  fromEvent,
   map,
+  merge,
   NEVER,
   Observable,
   of,
@@ -44,35 +47,30 @@ export class FrFormCacheSessionStorageService
   readonly #cachePrefix = 'SessionFormCacheStorageService.';
 
   getValue<T>(cacheKey: string): Observable<T | null> {
-    try {
+    return defer(() => {
       const json = sessionStorage.getItem(this.#cachePrefix + cacheKey);
-      if (json != null) {
-        const value = JSON.parse(json);
-        return of(value);
+      if (json == null) {
+        return of(null);
       }
-    } catch {
-      // ignore
-    }
-    return of(null);
+
+      const value = JSON.parse(json);
+      return of(value);
+    }).pipe(catchError((_err) => of(null)));
   }
 
   setValue<T>(cacheKey: string, value: T): Observable<void> {
-    try {
+    return defer(() => {
       const json = JSON.stringify(value);
       sessionStorage.setItem(this.#cachePrefix + cacheKey, json);
-    } catch {
-      // ignore
-    }
-    return EMPTY;
+      return of();
+    }).pipe(catchError((_err) => of()));
   }
 
   removeValue(cacheKey: string): Observable<void> {
-    try {
+    return defer(() => {
       sessionStorage.removeItem(this.#cachePrefix + cacheKey);
-    } catch {
-      // ignore
-    }
-    return EMPTY;
+      return of();
+    }).pipe(catchError((_err) => of()));
   }
 }
 
@@ -111,21 +109,23 @@ export class FrFormCacheDirective<T> implements OnInit, OnDestroy {
                 );
           return combineLatest({ cacheKey: of(cacheKey), value: value$ });
         }),
+        takeUntil(this.#destroyed),
         switchMap(({ cacheKey, value }) =>
           this.#storageService.setValue(cacheKey, value)
-        ),
-        takeUntil(this.#destroyed)
+        )
       )
       .subscribe();
 
-    this.#destroyed.pipe(switchMap(() => this.#cacheKey)).subscribe({
-      next: (cacheKey) => {
-        if (cacheKey !== '' && this.#container.control != null) {
-          const value = this.#container.control.getRawValue();
-          this.#storageService.setValue(cacheKey, value).subscribe();
-        }
-      },
-    });
+    merge(fromEvent(window, 'beforeunload'), this.#destroyed)
+      .pipe(switchMap(() => this.#cacheKey))
+      .subscribe({
+        next: (cacheKey) => {
+          if (cacheKey !== '' && this.#container.control != null) {
+            const value = this.#container.control.getRawValue();
+            this.#storageService.setValue(cacheKey, value).subscribe();
+          }
+        },
+      });
   }
 
   ngOnDestroy(): void {
