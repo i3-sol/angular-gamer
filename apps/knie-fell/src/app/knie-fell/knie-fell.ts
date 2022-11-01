@@ -47,12 +47,21 @@ export const createKnieFellForm = (
 };
 
 export type KnieFellState = {
-  readonly form: KnieFellFormGroup;
+  readonly form: KnieFellFormGroup | null;
   readonly name: string;
   readonly spiele: readonly SpielState[];
   readonly gesamtSpiele: number;
   readonly disableRemoveSpiel: boolean;
   readonly disableAddSpiel: boolean;
+};
+
+const initialKnieFellState: KnieFellState = {
+  form: null,
+  name: '',
+  spiele: [],
+  gesamtSpiele: 0,
+  disableRemoveSpiel: true,
+  disableAddSpiel: true,
 };
 
 const calcGesamtSpiele = (spiele: readonly SpielState[]): number => {
@@ -63,44 +72,56 @@ const calcGesamtSpiele = (spiele: readonly SpielState[]): number => {
 };
 
 export const mapKnieFellFormToState = (
-  form: KnieFellFormGroup
+  fb: NonNullableFormBuilder,
+  formCreationValue$: Observable<KnieFellValue | null>
 ): Observable<KnieFellState> => {
-  const name$ = rawValueChanges(form.controls.name, {
-    replayCurrentValue: true,
-  });
-  const spieleLength$ = rawValueChanges(form.controls.spiele, {
-    replayCurrentValue: true,
-  }).pipe(
-    map(() => form.controls.spiele.controls.length),
-    distinctUntilChanged(),
-    shareReplay()
-  );
-  const spiele$ = spieleLength$.pipe(
-    switchMap(() =>
-      combineLatest(
-        form.controls.spiele.controls.map((spielForm) =>
-          mapSpielFormToState(spielForm)
-        )
-      )
-    ),
-    shareReplay()
-  );
-  const gesamtSpiele$ = spiele$.pipe(map((spiele) => calcGesamtSpiele(spiele)));
-  const disableRemoveSpiel$ = spieleLength$.pipe(
-    map((spieleLength) => spieleLength <= minAnzahlSpiele)
-  );
-  const disableAddSpiel$ = spieleLength$.pipe(
-    map((spieleLength) => spieleLength >= maxAnzahlSpiele)
-  );
+  return formCreationValue$.pipe(
+    switchMap((formCreationValue) => {
+      if (formCreationValue == null) {
+        return of(initialKnieFellState);
+      }
 
-  return combineLatest({
-    form: of(form),
-    name: name$,
-    spiele: spiele$,
-    gesamtSpiele: gesamtSpiele$,
-    disableRemoveSpiel: disableRemoveSpiel$,
-    disableAddSpiel: disableAddSpiel$,
-  });
+      const form = createKnieFellForm(fb, formCreationValue);
+      const name$ = rawValueChanges(form.controls.name, {
+        replayCurrentValue: true,
+      });
+      const spieleLength$ = rawValueChanges(form.controls.spiele, {
+        replayCurrentValue: true,
+      }).pipe(
+        map(() => form.controls.spiele.controls.length),
+        distinctUntilChanged(),
+        shareReplay()
+      );
+      const spiele$ = spieleLength$.pipe(
+        switchMap(() =>
+          combineLatest(
+            form.controls.spiele.controls.map((spielForm) =>
+              mapSpielFormToState(spielForm)
+            )
+          )
+        ),
+        shareReplay()
+      );
+      const gesamtSpiele$ = spiele$.pipe(
+        map((spiele) => calcGesamtSpiele(spiele))
+      );
+      const disableRemoveSpiel$ = spieleLength$.pipe(
+        map((spieleLength) => spieleLength <= minAnzahlSpiele)
+      );
+      const disableAddSpiel$ = spieleLength$.pipe(
+        map((spieleLength) => spieleLength >= maxAnzahlSpiele)
+      );
+
+      return combineLatest({
+        form: of(form),
+        name: name$,
+        spiele: spiele$,
+        gesamtSpiele: gesamtSpiele$,
+        disableRemoveSpiel: disableRemoveSpiel$,
+        disableAddSpiel: disableAddSpiel$,
+      });
+    })
+  );
 };
 
 export const addSpiel = (

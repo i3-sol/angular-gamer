@@ -1,51 +1,53 @@
-<form
-  *ngIf="state$ | async as state"
-  [formGroup]="state.form"
-  frFormCache="KnieFell"
-  (cacheValueLoaded)="setCachedValue($event)"
->
-  <div>
-    <label class="kf-label">Name</label>
-    <input type="text" formControlName="name" />
-  </div>
-  <div>
-    <label class="kf-label">Anzahl Spiele</label>
-    <button
-      type="button"
-      [disabled]="state.disableRemoveSpiel"
-      (click)="removeSpiel()"
-    >
-      -
-    </button>
-    <button
-      type="button"
-      [disabled]="state.disableAddSpiel"
-      (click)="addSpiel()"
-    >
-      +
-    </button>
-  </div>
-  <div class="kf-spiele-container">
-    <ng-container
-      *ngFor="
-        let spiel of state.spiele;
-        let spielIndex = index;
-        let firstSpiel = first;
-        trackBy: trackSpiel
-      "
-    >
-      <kf-spiel
-        [state]="state.spiele[spielIndex]"
-        [showLabels]="firstSpiel"
-      ></kf-spiel>
-    </ng-container>
-  </div>
-  <div>
-    <label class="kf-label">Gesamtsumme</label>
-    <span class="kf-column kf-field-value">{{ state.gesamtSpiele }}</span>
-  </div>
-  <div>
-    <button type="submit">speichern</button>
-    <button type="reset">alles löschen</button>
-  </div>
-</form>
+<ng-container *ngIf="state$ | async as state">
+  <form
+    *ngIf="state.form"
+    [formGroup]="state.form"
+    frFormCache="KnieFell"
+    (cacheValueLoaded)="setCachedValue($event, state.form)"
+  >
+    <div>
+      <label class="kf-label">Name</label>
+      <input type="text" formControlName="name" />
+    </div>
+    <div>
+      <label class="kf-label">Anzahl Spiele</label>
+      <button
+        type="button"
+        [disabled]="state.disableRemoveSpiel"
+        (click)="removeSpiel(state.form)"
+      >
+        -
+      </button>
+      <button
+        type="button"
+        [disabled]="state.disableAddSpiel"
+        (click)="addSpiel(state.form)"
+      >
+        +
+      </button>
+    </div>
+    <div class="kf-spiele-container">
+      <ng-container
+        *ngFor="
+          let spiel of state.spiele;
+          let spielIndex = index;
+          let firstSpiel = first;
+          trackBy: trackSpiel
+        "
+      >
+        <kf-spiel
+          [state]="state.spiele[spielIndex]"
+          [showLabels]="firstSpiel"
+        ></kf-spiel>
+      </ng-container>
+    </div>
+    <div>
+      <label class="kf-label">Gesamtsumme</label>
+      <span class="kf-column kf-field-value">{{ state.gesamtSpiele }}</span>
+    </div>
+    <div>
+      <button type="submit">speichern</button>
+      <button type="reset">alles löschen</button>
+    </div>
+  </form>
+</ng-container>

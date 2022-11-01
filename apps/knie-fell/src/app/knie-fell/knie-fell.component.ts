@@ -1,13 +1,14 @@
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { startWith, Subject } from 'rxjs';
 
 import { FrFormCacheDirective, FrFormCacheValue } from '@flensrocker/forms';
 
 import {
   addSpiel,
-  createKnieFellForm,
   initialKnieFellValue,
+  KnieFellFormGroup,
   KnieFellValue,
   mapKnieFellFormToState,
   removeSpiel,
@@ -32,26 +33,22 @@ import { SpielComponent } from './spiel.component';
 })
 export class KnieFellComponent {
   readonly #fb = inject(NonNullableFormBuilder);
-  readonly #form = createKnieFellForm(this.#fb, initialKnieFellValue);
+  readonly #formCreationValue$ = new Subject<KnieFellValue | null>();
 
-  readonly state$ = mapKnieFellFormToState(this.#form);
+  readonly state$ = mapKnieFellFormToState(
+    this.#fb,
+    this.#formCreationValue$.pipe(startWith(initialKnieFellValue))
+  );
 
-  setCachedValue(cacheValue: FrFormCacheValue<KnieFellValue>): void {
-    if (cacheValue.value.spiele.length > 0) {
-      while (
-        this.#form.controls.spiele.length < cacheValue.value.spiele.length
-      ) {
-        this.addSpiel();
-      }
-      while (
-        this.#form.controls.spiele.length > cacheValue.value.spiele.length
-      ) {
-        this.removeSpiel();
-      }
-      // trigger change detection
-      setTimeout(() => {
-        this.#form.setValue(cacheValue.value);
-      }, 0);
+  setCachedValue(
+    cacheValue: FrFormCacheValue<KnieFellValue>,
+    form: KnieFellFormGroup
+  ): void {
+    if (cacheValue.value.spiele.length === form.controls.spiele.length) {
+      form.setValue(cacheValue.value);
+    } else {
+      this.#formCreationValue$.next(null);
+      setTimeout(() => this.#formCreationValue$.next(cacheValue.value), 1);
     }
   }
 
@@ -59,11 +56,11 @@ export class KnieFellComponent {
     return spiel.nummer;
   }
 
-  addSpiel(): void {
-    addSpiel(this.#fb, this.#form);
+  addSpiel(form: KnieFellFormGroup): void {
+    addSpiel(this.#fb, form);
   }
 
-  removeSpiel(): void {
-    removeSpiel(this.#form);
+  removeSpiel(form: KnieFellFormGroup): void {
+    removeSpiel(form);
   }
 }
