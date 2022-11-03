@@ -9,6 +9,7 @@ import {
   addSpiel,
   initialKnieFellValue,
   KnieFellFormGroup,
+  KnieFellState,
   KnieFellValue,
   mapKnieFellFormToState,
   removeSpiel,
@@ -33,23 +34,19 @@ import { SpielComponent } from './spiel.component';
 })
 export class KnieFellComponent {
   readonly #fb = inject(NonNullableFormBuilder);
-  readonly #formCreationValue$ = new Subject<KnieFellValue | null>();
+  readonly #formCreationValue$ = new Subject<KnieFellValue>();
 
   readonly state$ = mapKnieFellFormToState(
     this.#fb,
     this.#formCreationValue$.pipe(startWith(initialKnieFellValue))
   );
 
-  setCachedValue(
-    cacheValue: FrFormCacheValue<KnieFellValue>,
-    form: KnieFellFormGroup
-  ): void {
-    if (cacheValue.value.spiele.length === form.controls.spiele.length) {
-      form.setValue(cacheValue.value);
-    } else {
-      this.#formCreationValue$.next(null);
-      setTimeout(() => this.#formCreationValue$.next(cacheValue.value), 1);
-    }
+  setCachedValue(cacheValue: FrFormCacheValue<KnieFellValue>): void {
+    setTimeout(() => {
+      if (cacheValue.value != null) {
+        this.#formCreationValue$.next(cacheValue.value);
+      }
+    }, 1);
   }
 
   trackSpiel(_index: number, spiel: SpielState): number {
@@ -62,5 +59,15 @@ export class KnieFellComponent {
 
   removeSpiel(form: KnieFellFormGroup): void {
     removeSpiel(form);
+  }
+
+  submit(state: KnieFellState): void {
+    // TODO
+    this.#formCreationValue$.next(initialKnieFellValue);
+  }
+
+  reset(formCache: FrFormCacheDirective<KnieFellValue>): void {
+    formCache.removeValue();
+    this.#formCreationValue$.next(initialKnieFellValue);
   }
 }

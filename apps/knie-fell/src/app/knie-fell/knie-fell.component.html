@@ -1,9 +1,11 @@
 <ng-container *ngIf="state$ | async as state">
   <form
-    *ngIf="state.form"
     [formGroup]="state.form"
-    frFormCache="KnieFell"
-    (cacheValueLoaded)="setCachedValue($event, state.form)"
+    [frFormCache]="state.form"
+    cacheKey="KnieFell"
+    (cacheValueLoaded)="setCachedValue($event)"
+    #formCache="frFormCache"
+    (ngSubmit)="submit(state)"
   >
     <div>
       <label class="kf-label">Name</label>
@@ -47,7 +49,7 @@
     </div>
     <div>
       <button type="submit">speichern</button>
-      <button type="reset">alles löschen</button>
+      <button type="button" (click)="reset(formCache)">alles löschen</button>
     </div>
   </form>
 </ng-container>

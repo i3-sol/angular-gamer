@@ -10,10 +10,11 @@ import {
   Output,
   Provider,
 } from '@angular/core';
-import { ControlContainer } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import {
   BehaviorSubject,
   catchError,
+  combineLatest,
   concatMap,
   debounceTime,
   defer,
@@ -23,7 +24,6 @@ import {
   fromEvent,
   map,
   merge,
-  NEVER,
   Observable,
   of,
   Subject,
@@ -31,12 +31,11 @@ import {
   takeUntil,
 } from 'rxjs';
 
-import { isNotNull } from './is-not-null';
 import { rawValueChanges } from './raw-value-changes';
 
 export type FrFormCacheValue<T> = {
   cacheKey: string;
-  value: T;
+  value: T | null;
 };
 
 @Injectable({
@@ -45,8 +44,8 @@ export type FrFormCacheValue<T> = {
 })
 export abstract class FrFormCacheStorageService {
   abstract getValue<T>(cacheKey: string): Observable<T | null>;
-  abstract setValue<T>(cacheKey: string, value: T): Observable<void>;
-  abstract removeValue(cacheKey: string): Observable<void>;
+  abstract setValue<T>(cacheKey: string, value: T): Observable<boolean>;
+  abstract removeValue(cacheKey: string): Observable<boolean>;
 }
 
 @Injectable({
@@ -71,19 +70,19 @@ export class FrBaseFormCacheStorageService
     }).pipe(catchError((_err) => of(null)));
   }
 
-  setValue<T>(cacheKey: string, value: T): Observable<void> {
+  setValue<T>(cacheKey: string, value: T): Observable<boolean> {
     return defer(() => {
       const json = JSON.stringify(value);
       this.storage.setItem(this.#cachePrefix + cacheKey, json);
-      return of();
-    }).pipe(catchError((_err) => of()));
+      return of(true);
+    }).pipe(catchError((_err) => of(false)));
   }
 
-  removeValue(cacheKey: string): Observable<void> {
+  removeValue(cacheKey: string): Observable<boolean> {
     return defer(() => {
       this.storage.removeItem(this.#cachePrefix + cacheKey);
-      return of();
-    }).pipe(catchError((_err) => of()));
+      return of(true);
+    }).pipe(catchError((_err) => of(false)));
   }
 }
 
@@ -155,11 +154,21 @@ export const provideLocalStorageFormCache = (): Provider[] => [
 })
 export class FrFormCacheDirective<T> implements OnInit, OnDestroy {
   readonly #destroyed = new Subject<void>();
-  readonly #container = inject(ControlContainer, { self: true });
   readonly #storageService = inject(FrFormCacheStorageService);
+  #isSubmitted = false;
+  readonly #form = new BehaviorSubject<FormGroup | null>(null);
   readonly #cacheKey = new BehaviorSubject<string | null>(null);
+  readonly #formWithCacheKey = combineLatest({
+    form: this.#form.asObservable(),
+    cacheKey: this.#cacheKey.asObservable(),
+  });
 
-  @Input() set frFormCache(cacheKey: string) {
+  @Input() set frFormCache(form: FormGroup | null) {
+    this.#isSubmitted = false;
+    this.#form.next(form);
+  }
+  @Input() set cacheKey(cacheKey: string) {
+    this.#isSubmitted = false;
     this.#cacheKey.next(cacheKey === '' ? null : cacheKey);
   }
 
@@ -168,38 +177,35 @@ export class FrFormCacheDirective<T> implements OnInit, OnDestroy {
       distinctUntilChanged(),
       switchMap((cacheKey) =>
         cacheKey == null
-          ? NEVER
-          : this.#storageService.getValue<T>(cacheKey).pipe(
-              isNotNull(),
-              map((value) => ({ cacheKey, value }))
-            )
+          ? EMPTY
+          : this.#storageService
+              .getValue<T>(cacheKey)
+              .pipe(map((value) => ({ cacheKey, value })))
       ),
       takeUntil(this.#destroyed)
     );
 
   @HostListener('submit')
   onSubmit(): void {
-    this.removeValue();
-  }
-
-  @HostListener('reset')
-  onReset(): void {
+    this.#isSubmitted = true;
     this.removeValue();
   }
 
   ngOnInit(): void {
-    this.#cacheKey
+    this.#formWithCacheKey
       .pipe(
-        switchMap((cacheKey) =>
-          cacheKey == null || this.#container.control == null
-            ? NEVER
-            : rawValueChanges(this.#container.control).pipe(
+        switchMap(({ form, cacheKey }) => {
+          return cacheKey == null || form == null
+            ? EMPTY
+            : rawValueChanges(form).pipe(
                 debounceTime(1_000),
                 switchMap((value) =>
-                  this.#storageService.setValue(cacheKey, value)
+                  this.#storageService
+                    .setValue(cacheKey, value)
+                    .pipe(map(() => value))
                 )
-              )
-        ),
+              );
+        }),
         takeUntil(this.#destroyed)
       )
       .subscribe();
@@ -207,12 +213,18 @@ export class FrFormCacheDirective<T> implements OnInit, OnDestroy {
     merge(fromEvent(window, 'beforeunload'), this.#destroyed)
       .pipe(
         switchMap(() => {
+          const form = this.#form.value;
           const cacheKey = this.#cacheKey.value;
-          if (cacheKey == null || this.#container.control == null) {
+          if (
+            form == null ||
+            cacheKey == null ||
+            !form.dirty ||
+            this.#isSubmitted
+          ) {
             return EMPTY;
           }
 
-          const value = this.#container.control.getRawValue();
+          const value = form.getRawValue();
           return this.#storageService.setValue(cacheKey, value);
         })
       )

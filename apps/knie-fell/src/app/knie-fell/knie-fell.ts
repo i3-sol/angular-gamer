@@ -47,21 +47,12 @@ export const createKnieFellForm = (
 };
 
 export type KnieFellState = {
-  readonly form: KnieFellFormGroup | null;
+  readonly form: KnieFellFormGroup;
   readonly name: string;
   readonly spiele: readonly SpielState[];
   readonly gesamtSpiele: number;
   readonly disableRemoveSpiel: boolean;
   readonly disableAddSpiel: boolean;
-};
-
-const initialKnieFellState: KnieFellState = {
-  form: null,
-  name: '',
-  spiele: [],
-  gesamtSpiele: 0,
-  disableRemoveSpiel: true,
-  disableAddSpiel: true,
 };
 
 const calcGesamtSpiele = (spiele: readonly SpielState[]): number => {
@@ -73,14 +64,10 @@ const calcGesamtSpiele = (spiele: readonly SpielState[]): number => {
 
 export const mapKnieFellFormToState = (
   fb: NonNullableFormBuilder,
-  formCreationValue$: Observable<KnieFellValue | null>
+  formCreationValue$: Observable<KnieFellValue>
 ): Observable<KnieFellState> => {
   return formCreationValue$.pipe(
     switchMap((formCreationValue) => {
-      if (formCreationValue == null) {
-        return of(initialKnieFellState);
-      }
-
       const form = createKnieFellForm(fb, formCreationValue);
       const name$ = rawValueChanges(form.controls.name, {
         replayCurrentValue: true,
