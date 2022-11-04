@@ -1,12 +1,17 @@
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import {
+  asapScheduler,
   combineLatest,
   distinctUntilChanged,
   map,
   Observable,
+  observeOn,
   of,
   shareReplay,
+  startWith,
+  Subject,
   switchMap,
+  takeUntil,
 } from 'rxjs';
 
 import { FormGroupOf, FormOf, rawValueChanges } from '@flensrocker/forms';
@@ -19,6 +24,7 @@ import {
   SpielState,
   SpielValue,
 } from './spiel';
+import { inject, Injectable, OnDestroy } from '@angular/core';
 
 export type KnieFellValue = {
   readonly name: string;
@@ -64,51 +70,45 @@ const calcGesamtSpiele = (spiele: readonly SpielState[]): number => {
 
 export const mapKnieFellFormToState = (
   fb: NonNullableFormBuilder,
-  formCreationValue$: Observable<KnieFellValue>
+  formValue: KnieFellValue
 ): Observable<KnieFellState> => {
-  return formCreationValue$.pipe(
-    switchMap((formCreationValue) => {
-      const form = createKnieFellForm(fb, formCreationValue);
-      const name$ = rawValueChanges(form.controls.name, {
-        replayCurrentValue: true,
-      });
-      const spieleLength$ = rawValueChanges(form.controls.spiele, {
-        replayCurrentValue: true,
-      }).pipe(
-        map(() => form.controls.spiele.controls.length),
-        distinctUntilChanged(),
-        shareReplay()
-      );
-      const spiele$ = spieleLength$.pipe(
-        switchMap(() =>
-          combineLatest(
-            form.controls.spiele.controls.map((spielForm) =>
-              mapSpielFormToState(spielForm)
-            )
-          )
-        ),
-        shareReplay()
-      );
-      const gesamtSpiele$ = spiele$.pipe(
-        map((spiele) => calcGesamtSpiele(spiele))
-      );
-      const disableRemoveSpiel$ = spieleLength$.pipe(
-        map((spieleLength) => spieleLength <= minAnzahlSpiele)
-      );
-      const disableAddSpiel$ = spieleLength$.pipe(
-        map((spieleLength) => spieleLength >= maxAnzahlSpiele)
-      );
-
-      return combineLatest({
-        form: of(form),
-        name: name$,
-        spiele: spiele$,
-        gesamtSpiele: gesamtSpiele$,
-        disableRemoveSpiel: disableRemoveSpiel$,
-        disableAddSpiel: disableAddSpiel$,
-      });
-    })
+  const form = createKnieFellForm(fb, formValue);
+  const name$ = rawValueChanges(form.controls.name, {
+    replayCurrentValue: true,
+  });
+  const spieleLength$ = rawValueChanges(form.controls.spiele, {
+    replayCurrentValue: true,
+  }).pipe(
+    map(() => form.controls.spiele.controls.length),
+    distinctUntilChanged(),
+    shareReplay()
   );
+  const spiele$ = spieleLength$.pipe(
+    switchMap(() =>
+      combineLatest(
+        form.controls.spiele.controls.map((spielForm) =>
+          mapSpielFormToState(spielForm)
+        )
+      )
+    ),
+    shareReplay()
+  );
+  const gesamtSpiele$ = spiele$.pipe(map((spiele) => calcGesamtSpiele(spiele)));
+  const disableRemoveSpiel$ = spieleLength$.pipe(
+    map((spieleLength) => spieleLength <= minAnzahlSpiele)
+  );
+  const disableAddSpiel$ = spieleLength$.pipe(
+    map((spieleLength) => spieleLength >= maxAnzahlSpiele)
+  );
+
+  return combineLatest({
+    form: of(form),
+    name: name$,
+    spiele: spiele$,
+    gesamtSpiele: gesamtSpiele$,
+    disableRemoveSpiel: disableRemoveSpiel$,
+    disableAddSpiel: disableAddSpiel$,
+  });
 };
 
 export const addSpiel = (
@@ -120,6 +120,7 @@ export const addSpiel = (
     form.controls.spiele.push(
       createSpielForm(fb, initialSpielValue(spieleLength + 1))
     );
+    form.markAsDirty();
   }
 };
 
@@ -127,5 +128,32 @@ export const removeSpiel = (form: KnieFellFormGroup): void => {
   const spieleLength = form.controls.spiele.length;
   if (spieleLength > minAnzahlSpiele) {
     form.controls.spiele.removeAt(spieleLength - 1);
+    form.markAsDirty();
   }
 };
+
+@Injectable()
+export class KnieFellService implements OnDestroy {
+  readonly #destroyed = new Subject<void>();
+  readonly #formCreationValue$ = new Subject<KnieFellValue>();
+
+  readonly fb = inject(NonNullableFormBuilder);
+  readonly state$: Observable<KnieFellState> = this.#formCreationValue$.pipe(
+    startWith(initialKnieFellValue),
+    switchMap((formCreationValue) =>
+      mapKnieFellFormToState(this.fb, formCreationValue)
+    ),
+    takeUntil(this.#destroyed),
+    shareReplay({ bufferSize: 1, refCount: true }),
+    observeOn(asapScheduler)
+  );
+
+  ngOnDestroy(): void {
+    this.#destroyed.next();
+    this.#destroyed.complete();
+  }
+
+  initialize(formValue?: KnieFellValue): void {
+    this.#formCreationValue$.next(formValue ?? initialKnieFellValue);
+  }
+}

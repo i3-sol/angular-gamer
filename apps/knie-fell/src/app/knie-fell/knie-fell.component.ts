@@ -1,17 +1,15 @@
 import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { startWith, Subject } from 'rxjs';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { FrFormCacheDirective, FrFormCacheValue } from '@flensrocker/forms';
 
 import {
-  addSpiel,
-  initialKnieFellValue,
-  KnieFellFormGroup,
   KnieFellState,
+  KnieFellService,
   KnieFellValue,
-  mapKnieFellFormToState,
+  addSpiel,
+  KnieFellFormGroup,
   removeSpiel,
 } from './knie-fell';
 import { SpielState } from './spiel';
@@ -31,22 +29,17 @@ import { SpielComponent } from './spiel.component';
     FrFormCacheDirective,
     SpielComponent,
   ],
+  providers: [KnieFellService],
 })
 export class KnieFellComponent {
-  readonly #fb = inject(NonNullableFormBuilder);
-  readonly #formCreationValue$ = new Subject<KnieFellValue>();
+  readonly #knieFellService = inject(KnieFellService);
 
-  readonly state$ = mapKnieFellFormToState(
-    this.#fb,
-    this.#formCreationValue$.pipe(startWith(initialKnieFellValue))
-  );
+  readonly state$ = this.#knieFellService.state$;
 
   setCachedValue(cacheValue: FrFormCacheValue<KnieFellValue>): void {
-    setTimeout(() => {
-      if (cacheValue.value != null) {
-        this.#formCreationValue$.next(cacheValue.value);
-      }
-    }, 1);
+    if (cacheValue.value != null) {
+      this.#knieFellService.initialize(cacheValue.value);
+    }
   }
 
   trackSpiel(_index: number, spiel: SpielState): number {
@@ -54,20 +47,22 @@ export class KnieFellComponent {
   }
 
   addSpiel(form: KnieFellFormGroup): void {
-    addSpiel(this.#fb, form);
+    // TODO move to service
+    addSpiel(this.#knieFellService.fb, form);
   }
 
   removeSpiel(form: KnieFellFormGroup): void {
+    // TODO move to service
     removeSpiel(form);
   }
 
   submit(state: KnieFellState): void {
-    // TODO
-    this.#formCreationValue$.next(initialKnieFellValue);
+    // TODO store localStorage or similar
+    this.#knieFellService.initialize();
   }
 
   reset(formCache: FrFormCacheDirective<KnieFellValue>): void {
     formCache.removeValue();
-    this.#formCreationValue$.next(initialKnieFellValue);
+    this.#knieFellService.initialize();
   }
 }
