@@ -82,6 +82,7 @@ export const createUntererBlockForm = (
 };
 
 export type UntererBlockState = {
+  readonly spielNummer: number;
   readonly form: UntererBlockFormGroup;
   readonly werte: UntererBlockValue;
   readonly gesamtUntererBlock: number;
@@ -100,12 +101,14 @@ const calcUntererBlockGesamt = (werte: UntererBlockValue): number => {
 };
 
 const calcUntererBlock = (
+  spielNummer: number,
   form: UntererBlockFormGroup,
   werte: UntererBlockValue
 ): UntererBlockState => {
   const gesamtUntererBlock = calcUntererBlockGesamt(werte);
 
   return {
+    spielNummer,
     form,
     werte,
     gesamtUntererBlock,
@@ -113,9 +116,10 @@ const calcUntererBlock = (
 };
 
 export const mapUntererBlockFormToState = (
+  spielNummer: number,
   form: UntererBlockFormGroup
 ): Observable<UntererBlockState> => {
   return rawValueChanges(form, {
     replayCurrentValue: true,
-  }).pipe(map((werte) => calcUntererBlock(form, werte)));
+  }).pipe(map((werte) => calcUntererBlock(spielNummer, form, werte)));
 };

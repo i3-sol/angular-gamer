@@ -1,62 +1,90 @@
-<ng-container *ngIf="state" [formGroup]="state.form">
-  <div>
-    <label *ngIf="showLabels" class="kf-label">Einser</label>
-    <kf-select
-      class="kf-column kf-field-value"
-      [werte]="erlaubtBeiEinser"
-      formControlName="einser"
-    ></kf-select>
-  </div>
-  <div>
-    <label *ngIf="showLabels" class="kf-label">Zweier</label>
-    <kf-select
-      class="kf-column kf-field-value"
-      [werte]="erlaubtBeiZweier"
-      formControlName="zweier"
-    ></kf-select>
-  </div>
-  <div>
-    <label *ngIf="showLabels" class="kf-label">Dreier</label>
-    <kf-select
-      class="kf-column kf-field-value"
-      [werte]="erlaubtBeiDreier"
-      formControlName="dreier"
-    ></kf-select>
-  </div>
-  <div>
-    <label *ngIf="showLabels" class="kf-label">Vierer</label>
-    <kf-select
-      class="kf-column kf-field-value"
-      [werte]="erlaubtBeiVierer"
-      formControlName="vierer"
-    ></kf-select>
-  </div>
-  <div>
-    <label *ngIf="showLabels" class="kf-label">Fünfer</label>
-    <kf-select
-      class="kf-column kf-field-value"
-      [werte]="erlaubtBeiFuenfer"
-      formControlName="fuenfer"
-    ></kf-select>
-  </div>
-  <div>
-    <label *ngIf="showLabels" class="kf-label">Sechser</label>
-    <kf-select
-      class="kf-column kf-field-value"
-      [werte]="erlaubtBeiSechser"
-      formControlName="sechser"
-    ></kf-select>
-  </div>
-  <div>
-    <label *ngIf="showLabels" class="kf-label">Gesamt</label>
-    <span class="kf-column kf-field-value">{{ state.gesamt }}</span>
-  </div>
-  <div>
-    <label *ngIf="showLabels" class="kf-label">Bonus</label>
-    <span class="kf-column kf-field-value">{{ state.bonus }}</span>
-  </div>
-  <div>
-    <label *ngIf="showLabels" class="kf-label">Gesamt oben</label>
-    <span class="kf-column kf-field-value">{{ state.gesamtObererBlock }}</span>
-  </div>
-</ng-container>
+<div
+  [class]="'kf kf-oberer-block-labels-' + (showLabels ? 'on' : 'off')"
+  *ngIf="state"
+  [formGroup]="state.form"
+>
+  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-einser">
+    Einser
+  </label>
+  <kf-select
+    class="kf-input"
+    style="grid-area: input-einser"
+    [werte]="erlaubtBeiEinser"
+    formControlName="einser"
+  ></kf-select>
+  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-zweier">
+    Zweier
+  </label>
+  <kf-select
+    class="kf-input"
+    style="grid-area: input-zweier"
+    [werte]="erlaubtBeiZweier"
+    formControlName="zweier"
+  ></kf-select>
+  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-dreier">
+    Dreier
+  </label>
+  <kf-select
+    class="kf-input"
+    style="grid-area: input-dreier"
+    [werte]="erlaubtBeiDreier"
+    formControlName="dreier"
+  ></kf-select>
+  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-vierer">
+    Vierer
+  </label>
+  <kf-select
+    class="kf-input"
+    style="grid-area: input-vierer"
+    [werte]="erlaubtBeiVierer"
+    formControlName="vierer"
+  ></kf-select>
+  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-fuenfer">
+    Fünfer
+  </label>
+  <kf-select
+    class="kf-input"
+    style="grid-area: input-fuenfer"
+    [werte]="erlaubtBeiFuenfer"
+    formControlName="fuenfer"
+  ></kf-select>
+  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-sechser">
+    Sechser
+  </label>
+  <kf-select
+    class="kf-input"
+    style="grid-area: input-sechser"
+    [werte]="erlaubtBeiSechser"
+    formControlName="sechser"
+  ></kf-select>
+  <label
+    *ngIf="showLabels"
+    class="kf-label"
+    style="grid-area: label-oben-gesamt"
+  >
+    Gesamt
+  </label>
+  <span class="kf-input" style="grid-area: oben-gesamt">
+    {{ state.gesamt }}
+  </span>
+  <label
+    *ngIf="showLabels"
+    class="kf-label"
+    style="grid-area: label-oben-bonus"
+  >
+    Bonus
+  </label>
+  <span class="kf-input" style="grid-area: oben-bonus">
+    {{ state.bonus }}
+  </span>
+  <label
+    *ngIf="showLabels"
+    class="kf-label"
+    style="grid-area: label-oben-total"
+  >
+    Gesamt oben
+  </label>
+  <span class="kf-input" style="grid-area: oben-total">
+    {{ state.gesamtObererBlock }}
+  </span>
+</div>

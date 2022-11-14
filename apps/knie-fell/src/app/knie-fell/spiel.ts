@@ -1,7 +1,7 @@
 import { NonNullableFormBuilder } from '@angular/forms';
 import { combineLatest, map, Observable, of, shareReplay } from 'rxjs';
 
-import { FormGroupOf, FormOf, rawValueChanges } from '@flensrocker/forms';
+import { FormGroupOf, FormOf } from '@flensrocker/forms';
 
 import {
   createObererBlockForm,
@@ -19,15 +19,13 @@ import {
 } from './unterer-block';
 
 export type SpielValue = {
-  readonly nummer: number;
   readonly obererBlock: ObererBlockValue;
   readonly untererBlock: UntererBlockValue;
 };
 export type SpielForm = FormOf<SpielValue>;
 export type SpielFormGroup = FormGroupOf<SpielValue>;
 
-export const initialSpielValue = (nummer: number): SpielValue => ({
-  nummer,
+export const initialSpielValue = (): SpielValue => ({
   obererBlock: initialObererBlockValue,
   untererBlock: initialUntererBlockValue,
 });
@@ -37,7 +35,6 @@ export const createSpielForm = (
   value: SpielValue
 ): SpielFormGroup => {
   const form = fb.group<SpielForm>({
-    nummer: fb.control(value.nummer),
     obererBlock: createObererBlockForm(fb, value.obererBlock),
     untererBlock: createUntererBlockForm(fb, value.untererBlock),
   });
@@ -47,22 +44,22 @@ export const createSpielForm = (
 
 export type SpielState = {
   readonly form: SpielFormGroup;
-  readonly nummer: number;
+  readonly spielNummer: number;
   readonly obererBlock: ObererBlockState;
   readonly untererBlock: UntererBlockState;
   readonly summeGesamt: number;
 };
 
 export const mapSpielFormToState = (
+  spielNummer: number,
   form: SpielFormGroup
 ): Observable<SpielState> => {
-  const nummer$ = rawValueChanges(form.controls.nummer, {
-    replayCurrentValue: true,
-  });
   const obererBlockState$ = mapObererBlockFormToState(
+    spielNummer,
     form.controls.obererBlock
   ).pipe(shareReplay());
   const untererBlockState$ = mapUntererBlockFormToState(
+    spielNummer,
     form.controls.untererBlock
   ).pipe(shareReplay());
 
@@ -80,7 +77,7 @@ export const mapSpielFormToState = (
 
   return combineLatest({
     form: of(form),
-    nummer: nummer$,
+    spielNummer: of(spielNummer),
     obererBlock: obererBlockState$,
     untererBlock: untererBlockState$,
     summeGesamt: summeGesamt$,

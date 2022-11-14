@@ -1,4 +1,4 @@
-<ng-container *ngIf="state$ | async as state">
+<div class="kf" *ngIf="state$ | async as state">
   <form
     [formGroup]="state.form"
     [frFormCache]="state.form"
@@ -7,28 +7,30 @@
     #formCache="frFormCache"
     (ngSubmit)="submit(state)"
   >
-    <div>
-      <label class="kf-label">Name</label>
-      <input type="text" formControlName="name" />
-    </div>
-    <div>
-      <label class="kf-label">Anzahl Spiele</label>
-      <button
-        type="button"
-        [disabled]="state.disableRemoveSpiel"
-        (click)="removeSpiel(state.form)"
+    <div class="kf-container">
+      <label class="kf-label" style="grid-area: label-name">Name</label>
+      <input type="text" style="grid-area: input-name" formControlName="name" />
+
+      <label class="kf-label" style="grid-area: label-anzahl"
+        >Anzahl Spiele</label
       >
-        -
-      </button>
-      <button
-        type="button"
-        [disabled]="state.disableAddSpiel"
-        (click)="addSpiel(state.form)"
-      >
-        +
-      </button>
-    </div>
-    <div class="kf-spiele-container">
+      <div style="grid-area: input-anzahl">
+        <button
+          type="button"
+          [disabled]="state.disableRemoveSpiel"
+          (click)="removeSpiel(state.form)"
+        >
+          -
+        </button>
+        <button
+          type="button"
+          [disabled]="state.disableAddSpiel"
+          (click)="addSpiel(state.form)"
+        >
+          +
+        </button>
+      </div>
+
       <ng-container
         *ngFor="
           let spiel of state.spiele;
@@ -38,18 +40,22 @@
         "
       >
         <kf-spiel
-          [state]="state.spiele[spielIndex]"
+          [style]="'grid-area: spiel-' + spiel.spielNummer"
+          [state]="spiel"
           [showLabels]="firstSpiel"
         ></kf-spiel>
       </ng-container>
-    </div>
-    <div>
-      <label class="kf-label">Gesamtsumme</label>
-      <span class="kf-column kf-field-value">{{ state.gesamtSpiele }}</span>
+
+      <label class="kf-label" style="grid-area: label-gesamt">
+        Gesamtsumme
+      </label>
+      <span class="kf-input" style="grid-area: gesamt">
+        {{ state.gesamtSpiele }}
+      </span>
     </div>
     <div>
       <button type="submit">speichern</button>
       <button type="button" (click)="reset(formCache)">alles löschen</button>
     </div>
   </form>
-</ng-container>
+</div>

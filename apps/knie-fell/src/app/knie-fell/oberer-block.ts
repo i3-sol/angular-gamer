@@ -95,6 +95,7 @@ const obenBonus: ObererBlockBonus = 35;
 const obenBonusAb = 63;
 
 export type ObererBlockState = {
+  readonly spielNummer: number;
   readonly form: ObererBlockFormGroup;
   readonly werte: ObererBlockValue;
   readonly gesamt: number;
@@ -125,6 +126,7 @@ const calcObererBlockGesamtObererBlock = (
 };
 
 const calcObererBlock = (
+  spielNummer: number,
   form: ObererBlockFormGroup,
   werte: ObererBlockValue
 ): ObererBlockState => {
@@ -133,6 +135,7 @@ const calcObererBlock = (
   const gesamtObererBlock = calcObererBlockGesamtObererBlock(gesamt, bonus);
 
   return {
+    spielNummer,
     form,
     werte,
     gesamt,
@@ -142,9 +145,10 @@ const calcObererBlock = (
 };
 
 export const mapObererBlockFormToState = (
+  spielNummer: number,
   form: ObererBlockFormGroup
 ): Observable<ObererBlockState> => {
   return rawValueChanges(form, {
     replayCurrentValue: true,
-  }).pipe(map((werte) => calcObererBlock(form, werte)));
+  }).pipe(map((werte) => calcObererBlock(spielNummer, form, werte)));
 };

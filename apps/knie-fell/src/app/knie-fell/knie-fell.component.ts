@@ -43,7 +43,7 @@ export class KnieFellComponent {
   }
 
   trackSpiel(_index: number, spiel: SpielState): number {
-    return spiel.nummer;
+    return spiel.spielNummer;
   }
 
   addSpiel(form: KnieFellFormGroup): void {

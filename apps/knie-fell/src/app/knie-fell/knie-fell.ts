@@ -35,9 +35,7 @@ export type KnieFellFormGroup = FormGroupOf<KnieFellValue>;
 
 export const initialKnieFellValue: KnieFellValue = {
   name: '',
-  spiele: new Array(maxAnzahlSpiele)
-    .fill(null)
-    .map((_, index) => initialSpielValue(index + 1)),
+  spiele: new Array(maxAnzahlSpiele).fill(null).map((_) => initialSpielValue()),
 };
 
 export const createKnieFellForm = (
@@ -86,8 +84,8 @@ export const mapKnieFellFormToState = (
   const spiele$ = spieleLength$.pipe(
     switchMap(() =>
       combineLatest(
-        form.controls.spiele.controls.map((spielForm) =>
-          mapSpielFormToState(spielForm)
+        form.controls.spiele.controls.map((spielForm, spielIndex) =>
+          mapSpielFormToState(spielIndex + 1, spielForm)
         )
       )
     ),
@@ -117,9 +115,7 @@ export const addSpiel = (
 ): void => {
   const spieleLength = form.controls.spiele.length;
   if (spieleLength < maxAnzahlSpiele) {
-    form.controls.spiele.push(
-      createSpielForm(fb, initialSpielValue(spieleLength + 1))
-    );
+    form.controls.spiele.push(createSpielForm(fb, initialSpielValue()));
     form.markAsDirty();
   }
 };
