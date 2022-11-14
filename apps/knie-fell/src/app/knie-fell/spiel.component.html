@@ -1,43 +1,37 @@
 <div
-  [class]="'kf kf-spiel-labels-' + (showLabels ? 'on' : 'off')"
+  class="kf"
+  [class]="'kf-spiel-container--labels-' + (showLabels ? 'on' : 'off')"
   *ngIf="state"
   [formGroup]="state.form"
 >
-  <label class="kf-label" style="grid-area: label-spiel">
+  <div *ngIf="showLabels" class="kf-label kf-spiel__empty"></div>
+  <label class="kf-label kf-spiel__label-nummer">
     Spiel {{ state.spielNummer }}
   </label>
 
   <kf-oberer-block
-    style="grid-area: oberer-block"
+    class="kf-spiel__oberer-block"
     [state]="state.obererBlock"
     [showLabels]="showLabels"
   ></kf-oberer-block>
 
   <kf-unterer-block
-    style="grid-area: unterer-block"
+    class="kf-spiel__unterer-block"
     [state]="state.untererBlock"
     [showLabels]="showLabels"
   ></kf-unterer-block>
 
-  <label
-    *ngIf="showLabels"
-    class="kf-label"
-    style="grid-area: label-gesamt-oben"
-  >
+  <label *ngIf="showLabels" class="kf-label kf-spiel__label-gesamt-oben">
     Gesamt oben
   </label>
-  <span class="kf-input" style="grid-area: gesamt-oben">
+  <span class="kf-input kf-spiel__input-gesamt-oben">
     {{ state.obererBlock.gesamtObererBlock }}
   </span>
 
-  <label
-    *ngIf="showLabels"
-    class="kf-label"
-    style="grid-area: label-spiel-gesamt"
-  >
+  <label *ngIf="showLabels" class="kf-label kf-spiel__label-spiel-gesamt">
     Summe Spiel
   </label>
-  <span class="kf-input" style="grid-area: spiel-gesamt">
+  <span class="kf-input kf-spiel__input-spiel-gesamt">
     {{ state.summeGesamt }}
   </span>
 </div>

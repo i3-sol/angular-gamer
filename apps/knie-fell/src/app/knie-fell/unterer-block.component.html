@@ -1,82 +1,75 @@
 <div
-  [class]="'kf kf-unterer-block-labels-' + (showLabels ? 'on' : 'off')"
+  class="kf"
+  [class]="'kf-unterer-block-container--labels-' + (showLabels ? 'on' : 'off')"
   *ngIf="state"
   [formGroup]="state.form"
 >
-  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-3pasch">
+  <label *ngIf="showLabels" class="kf-label kf-unterer-block__label-3pasch">
     Dreierpasch
   </label>
   <input
-    class="kf-input"
-    style="grid-area: input-3pasch"
+    class="kf-input kf-unterer-block__input-3pasch"
     type="number"
     step="1"
     formControlName="dreierpasch"
   />
-  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-4pasch">
+  <label *ngIf="showLabels" class="kf-label kf-unterer-block__label-4pasch">
     Viererpasch
   </label>
   <input
-    class="kf-input"
-    style="grid-area: input-4pasch"
+    class="kf-input kf-unterer-block__input-4pasch"
     type="number"
     step="1"
     formControlName="viererpasch"
   />
-  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-fullhouse">
+  <label *ngIf="showLabels" class="kf-label kf-unterer-block__label-fullhouse">
     Full House
   </label>
   <kf-select
-    class="kf-input"
-    style="grid-area: input-fullhouse"
+    class="kf-input kf-unterer-block__input-fullhouse"
     [werte]="erlaubtBeiFullHouse"
     formControlName="fullHouse"
   ></kf-select>
-  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-klstrasse">
+  <label *ngIf="showLabels" class="kf-label kf-unterer-block__label-klstrasse">
     kleine Straße
   </label>
   <kf-select
-    class="kf-input"
-    style="grid-area: input-klstrasse"
+    class="kf-input kf-unterer-block__input-klstrasse"
     [werte]="erlaubtBeiKleineStrasse"
     formControlName="kleineStrasse"
   ></kf-select>
-  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-grstrasse">
+  <label *ngIf="showLabels" class="kf-label kf-unterer-block__label-grstrasse">
     große Straße
   </label>
   <kf-select
-    class="kf-input"
-    style="grid-area: input-grstrasse"
+    class="kf-input kf-unterer-block__input-grstrasse"
     [werte]="erlaubtBeiGrosseStrasse"
     formControlName="grosseStrasse"
   ></kf-select>
-  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-kniefell">
+  <label *ngIf="showLabels" class="kf-label kf-unterer-block__label-kniefell">
     Knie-Fell
   </label>
   <kf-select
-    class="kf-input"
-    style="grid-area: input-kniefell"
+    class="kf-input kf-unterer-block__input-kniefell"
     [werte]="erlaubtBeiKnieFell"
     formControlName="knieFell"
   ></kf-select>
-  <label *ngIf="showLabels" class="kf-label" style="grid-area: label-chance">
+  <label *ngIf="showLabels" class="kf-label kf-unterer-block__label-chance">
     Chance
   </label>
   <input
-    class="kf-input"
-    style="grid-area: input-chance"
+    class="kf-input kf-unterer-block__input-chance"
     type="number"
     step="1"
     formControlName="chance"
   />
   <label
     *ngIf="showLabels"
-    class="kf-label"
-    style="grid-area: label-unten-gesamt"
+    class="kf-label kf-unterer-block__label-unten-gesamt"
   >
     Gesamt unten
   </label>
-  <span class="kf-input" style="grid-area: unten-gesamt">
+  <span class="kf-input kf-unterer-block__input-unten-gesamt">
     {{ state.gesamtUntererBlock }}
   </span>
 </div>

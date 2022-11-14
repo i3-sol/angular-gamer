@@ -1,0 +1,44 @@
+.kf {
+  --color: cornflowerblue;
+  --label-width: 100px;
+  --input-width: 50px;
+  --line-height: 3ex;
+  --padding: 3px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: small;
+}
+
+.kf input::-webkit-outer-spin-button,
+.kf input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.kf .ng-invalid {
+  border-color: red;
+}
+
+.kf .kf-button {
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+}
+
+.kf .kf-label {
+  color: var(--color);
+  outline: 1px solid var(--color);
+  padding: var(--padding);
+}
+
+.kf .kf-input {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  padding: var(--padding);
+  text-align: end;
+  outline: 1px solid var(--color);
+  background-color: transparent;
+}
+
+.kf input[type='text'].kf-input {
+  text-align: start;
+}

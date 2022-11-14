@@ -1,0 +1,48 @@
+.kf-spiel-container--labels-on {
+  display: grid;
+  grid-template-columns: var(--label-width) var(--input-width);
+  grid-template-rows: var(--line-height) auto auto repeat(2, var(--line-height));
+  grid-template-areas:
+    'empty              label-spiel'
+    'oberer-block       oberer-block'
+    'unterer-block      unterer-block'
+    'label-gesamt-oben  gesamt-oben'
+    'label-spiel-gesamt spiel-gesamt';
+}
+
+.kf-spiel-container--labels-off {
+  display: grid;
+  grid-template-columns: var(--input-width);
+  grid-template-rows: var(--line-height) auto auto repeat(2, var(--line-height));
+  grid-template-areas:
+    'label-spiel'
+    'oberer-block'
+    'unterer-block'
+    'gesamt-oben'
+    'spiel-gesamt';
+}
+
+.kf-spiel__empty {
+  grid-area: empty;
+}
+.kf-spiel__label-nummer {
+  grid-area: label-spiel;
+}
+.kf-spiel__oberer-block {
+  grid-area: oberer-block;
+}
+.kf-spiel__unterer-block {
+  grid-area: unterer-block;
+}
+.kf-spiel__label-gesamt-oben {
+  grid-area: label-gesamt-oben;
+}
+.kf-spiel__input-gesamt-oben {
+  grid-area: gesamt-oben;
+}
+.kf-spiel__label-spiel-gesamt {
+  grid-area: label-spiel-gesamt;
+}
+.kf-spiel__input-spiel-gesamt {
+  grid-area: spiel-gesamt;
+}

@@ -16,7 +16,7 @@ import { SelectComponent } from './select.component';
 @Component({
   selector: 'kf-oberer-block',
   templateUrl: './oberer-block.component.html',
-  styleUrls: ['./styles.css'],
+  styleUrls: ['./global.css', './oberer-block.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgIf, ReactiveFormsModule, SelectComponent],

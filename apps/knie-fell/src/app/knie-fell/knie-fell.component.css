@@ -1,0 +1,46 @@
+.kf-container {
+  display: grid;
+  grid-template-columns: var(--label-width) repeat(6, var(--input-width));
+  grid-template-rows: var(--line-height) auto var(--line-height);
+  grid-template-areas:
+    'label-name   input-name   input-name   input-name   label-anzahl label-anzahl input-anzahl'
+    'spiel-1      spiel-1      spiel-2      spiel-3      spiel-4      spiel-5      spiel-6'
+    'label-gesamt input-gesamt .            .          .       .       .      ';
+}
+
+.kf-name__label {
+  grid-area: label-name;
+}
+.kf-name__input {
+  grid-area: input-name;
+}
+.kf-anzahl__label {
+  grid-area: label-anzahl;
+}
+.kf-anzahl__input {
+  grid-area: input-anzahl;
+}
+.kf-spiel__1 {
+  grid-area: spiel-1;
+}
+.kf-spiel__2 {
+  grid-area: spiel-2;
+}
+.kf-spiel__3 {
+  grid-area: spiel-3;
+}
+.kf-spiel__4 {
+  grid-area: spiel-4;
+}
+.kf-spiel__5 {
+  grid-area: spiel-5;
+}
+.kf-spiel__6 {
+  grid-area: spiel-6;
+}
+.kf-gesamt__label {
+  grid-area: label-gesamt;
+}
+.kf-gesamt__input {
+  grid-area: input-gesamt;
+}

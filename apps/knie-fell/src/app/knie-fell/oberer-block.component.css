@@ -1,0 +1,86 @@
+.kf-oberer-block-container--labels-on {
+  display: grid;
+  grid-template-columns: var(--label-width) var(--input-width);
+  grid-template-rows: repeat(9, var(--line-height));
+  grid-template-areas:
+    'label-einser      input-einser'
+    'label-zweier      input-zweier'
+    'label-dreier      input-dreier'
+    'label-vierer      input-vierer'
+    'label-fuenfer     input-fuenfer'
+    'label-sechser     input-sechser'
+    'label-oben-gesamt oben-gesamt'
+    'label-oben-bonus  oben-bonus'
+    'label-oben-total  oben-total';
+}
+
+.kf-oberer-block-container--labels-off {
+  display: grid;
+  grid-template-columns: var(--input-width);
+  grid-template-rows: repeat(9, var(--line-height));
+  grid-template-areas:
+    'input-einser'
+    'input-zweier'
+    'input-dreier'
+    'input-vierer'
+    'input-fuenfer'
+    'input-sechser'
+    'oben-gesamt'
+    'oben-bonus'
+    'oben-total';
+}
+
+.kf-oberer-block__label-einser {
+  grid-area: label-einser;
+}
+.kf-oberer-block__input-einser {
+  grid-area: input-einser;
+}
+.kf-oberer-block__label-zweier {
+  grid-area: label-zweier;
+}
+.kf-oberer-block__input-zweier {
+  grid-area: input-zweier;
+}
+.kf-oberer-block__label-dreier {
+  grid-area: label-dreier;
+}
+.kf-oberer-block__input-dreier {
+  grid-area: input-dreier;
+}
+.kf-oberer-block__label-vierer {
+  grid-area: label-vierer;
+}
+.kf-oberer-block__input-vierer {
+  grid-area: input-vierer;
+}
+.kf-oberer-block__label-fuenfer {
+  grid-area: label-fuenfer;
+}
+.kf-oberer-block__input-fuenfer {
+  grid-area: input-fuenfer;
+}
+.kf-oberer-block__label-sechser {
+  grid-area: label-sechser;
+}
+.kf-oberer-block__input-sechser {
+  grid-area: input-sechser;
+}
+.kf-oberer-block__label-oben-gesamt {
+  grid-area: label-oben-gesamt;
+}
+.kf-oberer-block__input-oben-gesamt {
+  grid-area: oben-gesamt;
+}
+.kf-oberer-block__label-oben-bonus {
+  grid-area: label-oben-bonus;
+}
+.kf-oberer-block__input-oben-bonus {
+  grid-area: oben-bonus;
+}
+.kf-oberer-block__label-oben-total {
+  grid-area: label-oben-total;
+}
+.kf-oberer-block__input-oben-total {
+  grid-area: oben-total;
+}

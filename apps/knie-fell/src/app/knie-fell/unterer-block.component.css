@@ -1,0 +1,78 @@
+.kf-unterer-block-container--labels-on {
+  display: grid;
+  grid-template-columns: var(--label-width) var(--input-width);
+  grid-template-rows: repeat(8, var(--line-height));
+  grid-template-areas:
+    'label-3pasch input-3pasch'
+    'label-4pasch input-4pasch'
+    'label-fullhouse input-fullhouse'
+    'label-klstrasse input-klstrasse'
+    'label-grstrasse input-grstrasse'
+    'label-kniefell input-kniefell'
+    'label-chance input-chance'
+    'label-unten-gesamt unten-gesamt';
+}
+
+.kf-unterer-block-container--labels-off {
+  display: grid;
+  grid-template-columns: var(--input-width);
+  grid-template-rows: repeat(8, var(--line-height));
+  grid-template-areas:
+    'input-3pasch'
+    'input-4pasch'
+    'input-fullhouse'
+    'input-klstrasse'
+    'input-grstrasse'
+    'input-kniefell'
+    'input-chance'
+    'unten-gesamt';
+}
+
+.kf-unterer-block__label-3pasch {
+  grid-area: label-3pasch;
+}
+.kf-unterer-block__input-3pasch {
+  grid-area: input-3pasch;
+}
+.kf-unterer-block__label-4pasch {
+  grid-area: label-4pasch;
+}
+.kf-unterer-block__input-4pasch {
+  grid-area: input-4pasch;
+}
+.kf-unterer-block__label-fullhouse {
+  grid-area: label-fullhouse;
+}
+.kf-unterer-block__input-fullhouse {
+  grid-area: input-fullhouse;
+}
+.kf-unterer-block__label-klstrasse {
+  grid-area: label-klstrasse;
+}
+.kf-unterer-block__input-klstrasse {
+  grid-area: input-klstrasse;
+}
+.kf-unterer-block__label-grstrasse {
+  grid-area: label-grstrasse;
+}
+.kf-unterer-block__input-grstrasse {
+  grid-area: input-grstrasse;
+}
+.kf-unterer-block__label-kniefell {
+  grid-area: label-kniefell;
+}
+.kf-unterer-block__input-kniefell {
+  grid-area: input-kniefell;
+}
+.kf-unterer-block__label-chance {
+  grid-area: label-chance;
+}
+.kf-unterer-block__input-chance {
+  grid-area: input-chance;
+}
+.kf-unterer-block__label-unten-gesamt {
+  grid-area: label-unten-gesamt;
+}
+.kf-unterer-block__input-unten-gesamt {
+  grid-area: unten-gesamt;
+}

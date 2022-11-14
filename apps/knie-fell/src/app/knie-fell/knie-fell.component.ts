@@ -18,7 +18,7 @@ import { SpielComponent } from './spiel.component';
 @Component({
   selector: 'kf-knie-fell',
   templateUrl: './knie-fell.component.html',
-  styleUrls: ['./styles.css'],
+  styleUrls: ['./global.css', './knie-fell.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

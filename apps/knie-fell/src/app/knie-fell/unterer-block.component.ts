@@ -14,7 +14,7 @@ import {
 @Component({
   selector: 'kf-unterer-block',
   templateUrl: './unterer-block.component.html',
-  styleUrls: ['./styles.css'],
+  styleUrls: ['./global.css', './unterer-block.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgIf, ReactiveFormsModule, SelectComponent],

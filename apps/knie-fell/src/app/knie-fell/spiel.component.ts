@@ -9,7 +9,7 @@ import { UntererBlockComponent } from './unterer-block.component';
 @Component({
   selector: 'kf-spiel',
   templateUrl: './spiel.component.html',
-  styleUrls: ['./styles.css'],
+  styleUrls: ['./global.css', './spiel.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [

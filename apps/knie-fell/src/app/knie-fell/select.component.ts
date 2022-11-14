@@ -24,7 +24,7 @@ const feldToSelectValue = (value: Feld): string => {
 @Component({
   selector: 'kf-select',
   templateUrl: './select.component.html',
-  styleUrls: ['./styles.css', './select.component.css'],
+  styleUrls: ['./global.css', './select.component.css'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgForOf],
