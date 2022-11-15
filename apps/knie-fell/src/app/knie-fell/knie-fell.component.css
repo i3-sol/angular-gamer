@@ -19,6 +19,7 @@
 }
 .kf-anzahl__input {
   grid-area: input-anzahl;
+  padding: 0 !important;
 }
 .kf-spiel__1 {
   grid-area: spiel-1;

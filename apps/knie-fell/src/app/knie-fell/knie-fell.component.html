@@ -40,15 +40,14 @@
       <ng-container
         *ngFor="
           let spiel of state.spiele;
-          let spielIndex = index;
-          let firstSpiel = first;
+          let showLabels = first;
           trackBy: trackSpiel
         "
       >
         <kf-spiel
           [class]="'kf-spiel__' + spiel.spielNummer"
           [state]="spiel"
-          [showLabels]="firstSpiel"
+          [showLabels]="showLabels"
         ></kf-spiel>
       </ng-container>
 
