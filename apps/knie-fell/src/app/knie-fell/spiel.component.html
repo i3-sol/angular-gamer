@@ -4,7 +4,12 @@
   *ngIf="state"
   [formGroup]="state.form"
 >
-  <div *ngIf="showLabels" class="kf-label kf-spiel__empty"></div>
+  <ng-container *ngIf="showLabels">
+    <div class="kf-label kf-spiel__empty"></div>
+    <label class="kf-label kf-spiel__label-gesamt-oben"> Gesamt oben </label>
+    <label class="kf-label kf-spiel__label-spiel-gesamt"> Summe Spiel </label>
+  </ng-container>
+
   <label class="kf-label kf-spiel__label-nummer">
     Spiel {{ state.spielNummer }}
   </label>
@@ -21,17 +26,11 @@
     [showLabels]="showLabels"
   ></kf-unterer-block>
 
-  <label *ngIf="showLabels" class="kf-label kf-spiel__label-gesamt-oben">
-    Gesamt oben
-  </label>
-  <span class="kf-input kf-spiel__input-gesamt-oben">
+  <span class="kf-input kf-input--read-only kf-spiel__input-gesamt-oben">
     {{ state.obererBlock.gesamtObererBlock }}
   </span>
 
-  <label *ngIf="showLabels" class="kf-label kf-spiel__label-spiel-gesamt">
-    Summe Spiel
-  </label>
-  <span class="kf-input kf-spiel__input-spiel-gesamt">
+  <span class="kf-input kf-input--read-only kf-spiel__input-spiel-gesamt">
     {{ state.summeGesamt }}
   </span>
 </div>

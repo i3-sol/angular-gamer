@@ -42,3 +42,7 @@
 .kf input[type='text'].kf-input {
   text-align: start;
 }
+
+.kf .kf-input.kf-input--read-only {
+  color: var(--color);
+}
