@@ -4,8 +4,8 @@
   grid-template-rows: var(--line-height) auto var(--line-height);
   grid-template-areas:
     'label-name   input-name   input-name   input-name   label-anzahl label-anzahl input-anzahl'
-    'spiel-1      spiel-1      spiel-2      spiel-3      spiel-4      spiel-5      spiel-6'
-    'label-gesamt input-gesamt .            .          .       .       .      ';
+    'spiel-1      spiel-1      spiel-2      spiel-3      spiel-4      spiel-5      spiel-6     '
+    'label-gesamt input-gesamt .            .            .            .            .           ';
 }
 
 .kf-name__label {
@@ -43,4 +43,15 @@
 }
 .kf-gesamt__input {
   grid-area: input-gesamt;
+}
+
+.kf-anzahl-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.kf-anzahl-container .kf-button {
+  flex: 1 1 50%;
 }

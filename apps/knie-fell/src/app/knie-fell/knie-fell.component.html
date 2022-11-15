@@ -17,19 +17,10 @@
 
       <label class="kf-label kf-anzahl__label">Anzahl Spiele</label>
       <div class="kf-input kf-anzahl__input">
-        <div
-          style="
-            display: flex;
-            flex-direction: row;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-          "
-        >
+        <div class="kf-anzahl-container">
           <button
             type="button"
             class="kf-button kf-anzahl__button-dec"
-            style="flex: 1 1 50%"
             [disabled]="state.disableRemoveSpiel"
             (click)="removeSpiel(state.form)"
           >
@@ -38,7 +29,6 @@
           <button
             type="button"
             class="kf-button kf-anzahl__button-inc"
-            style="flex: 1 1 50%"
             [disabled]="state.disableAddSpiel"
             (click)="addSpiel(state.form)"
           >
