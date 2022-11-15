@@ -1,5 +1,6 @@
 .kf {
   --color: cornflowerblue;
+  --invalid-color: red;
   --label-width: 100px;
   --input-width: 50px;
   --line-height: 3ex;
@@ -11,10 +12,6 @@
 .kf input::-webkit-outer-spin-button,
 .kf input::-webkit-inner-spin-button {
   display: none;
-}
-
-.kf .ng-invalid {
-  border-color: red;
 }
 
 .kf .kf-button {
@@ -45,4 +42,8 @@
 
 .kf .kf-input.kf-input--read-only {
   color: var(--color);
+}
+
+.kf .kf-input.ng-invalid {
+  color: var(--invalid-color);
 }
