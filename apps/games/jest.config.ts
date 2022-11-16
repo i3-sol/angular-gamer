@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'knie-fell',
+  displayName: 'games',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -9,7 +9,7 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/apps/knie-fell',
+  coverageDirectory: '../../coverage/apps/games',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },
