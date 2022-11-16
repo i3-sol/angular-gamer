@@ -14,7 +14,11 @@
         "main": "apps/games/src/main.ts",
         "polyfills": "apps/games/src/polyfills.ts",
         "tsConfig": "apps/games/tsconfig.app.json",
-        "assets": ["apps/games/src/favicon.ico", "apps/games/src/assets"],
+        "assets": [
+          "apps/games/src/favicon.ico",
+          "apps/games/src/.htaccess",
+          "apps/games/src/assets"
+        ],
         "styles": ["apps/games/src/styles.css"],
         "scripts": []
       },
