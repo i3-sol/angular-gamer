@@ -7,4 +7,7 @@
   appearance: none;
   background-color: transparent;
   text-align: end;
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+  font-stretch: var(--input-font-stretch);
 }

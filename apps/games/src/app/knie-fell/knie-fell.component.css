@@ -7,8 +7,8 @@
   --input-width: var(--mobile-input-width);
 }
 
-@media (min-width: 62ch) and (pointer: fine),
-  (min-width: 62ch) and (pointer: none) {
+@media (min-width: 68ch) and (pointer: fine),
+  (min-width: 68ch) and (pointer: none) {
   .kf-form-container {
     --label-width: var(--desktop-label-width);
     --input-width: var(--desktop-input-width);
