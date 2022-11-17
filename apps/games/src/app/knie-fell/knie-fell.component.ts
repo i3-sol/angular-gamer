@@ -62,7 +62,9 @@ export class KnieFellComponent {
   }
 
   reset(formCache: FrFormCacheDirective<KnieFellValue>): void {
-    formCache.removeValue();
-    this.#knieFellService.initialize();
+    if (confirm('Sollen alle Eingaben gelöscht werden?')) {
+      formCache.removeValue();
+      this.#knieFellService.initialize();
+    }
   }
 }

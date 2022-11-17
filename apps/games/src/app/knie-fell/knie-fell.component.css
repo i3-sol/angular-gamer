@@ -2,16 +2,35 @@
   width: 100%;
 }
 
+.kf-form-container {
+  --label-width: var(--mobile-label-width);
+  --input-width: var(--mobile-input-width);
+}
+
+@media (min-width: 62ch) and (pointer: fine),
+  (min-width: 62ch) and (pointer: none) {
+  .kf-form-container {
+    --label-width: var(--desktop-label-width);
+    --input-width: var(--desktop-input-width);
+  }
+}
+
 .kf-form {
   display: grid;
   justify-content: center;
   grid-template-columns: var(--label-width) repeat(6, var(--input-width));
-  grid-template-rows: var(--line-height) auto var(--line-height);
+  grid-template-rows:
+    var(--line-height)
+    auto
+    var(--line-height)
+    calc(var(--padding) * 2)
+    var(--form-button-height);
   grid-template-areas:
     'label-name   input-name   input-name   input-name   label-anzahl label-anzahl input-anzahl'
     'spiel-1      spiel-1      spiel-2      spiel-3      spiel-4      spiel-5      spiel-6     '
     'label-gesamt input-gesamt .            .            .            .            .           '
-    'buttons      buttons      buttons      buttons      buttons      buttons      buttons     ';
+    '.            .            .            .            .            .            .           '
+    'submit       .            .            .            .            reset        reset       ';
 }
 
 .kf-name__label {
@@ -53,7 +72,8 @@
 
 .kf-anzahl-container {
   display: grid;
-  grid-template-columns: 50% 50%;
+  column-gap: var(--padding);
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 100%;
   grid-template-areas: 'dec inc';
   height: 100%;
@@ -67,6 +87,16 @@
   grid-area: inc;
 }
 
-.kf-button-container {
-  grid-area: buttons;
+.kf-form-submit-container {
+  grid-area: submit;
+  align-self: stretch;
+}
+
+.kf-form-reset-container {
+  grid-area: reset;
+  align-self: stretch;
+}
+
+.kf-form-button-container .kf-button {
+  width: 100%;
 }

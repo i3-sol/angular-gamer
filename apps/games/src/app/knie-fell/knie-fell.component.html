@@ -24,7 +24,7 @@
             [disabled]="state.disableRemoveSpiel"
             (click)="removeSpiel(state.form)"
           >
-            -
+            &minus;
           </button>
           <button
             type="button"
@@ -32,7 +32,7 @@
             [disabled]="state.disableAddSpiel"
             (click)="addSpiel(state.form)"
           >
-            +
+            &plus;
           </button>
         </div>
       </div>
@@ -55,10 +55,12 @@
       <span class="kf-input kf-input--read-only kf-gesamt__input">
         {{ state.gesamtSpiele }}
       </span>
-      <div class="kf-button-container">
-        <button type="submit" class="kf-button">speichern</button>
+      <div class="kf-form-submit-container kf-form-button-container">
+        <button type="submit" disabled class="kf-button">speichern</button>
+      </div>
+      <div class="kf-form-reset-container kf-form-button-container">
         <button type="button" class="kf-button" (click)="reset(formCache)">
-          alles löschen
+          löschen
         </button>
       </div>
     </div>
