@@ -1,11 +1,23 @@
 .kf-container {
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .kf-container {
+    width: var(--max-container-width);
+  }
+}
+
+.kf-form {
   display: grid;
+  justify-content: center;
   grid-template-columns: var(--label-width) repeat(6, var(--input-width));
   grid-template-rows: var(--line-height) auto var(--line-height);
   grid-template-areas:
     'label-name   input-name   input-name   input-name   label-anzahl label-anzahl input-anzahl'
     'spiel-1      spiel-1      spiel-2      spiel-3      spiel-4      spiel-5      spiel-6     '
-    'label-gesamt input-gesamt .            .            .            .            .           ';
+    'label-gesamt input-gesamt .            .            .            .            .           '
+    'buttons      buttons      buttons      buttons      buttons      buttons      buttons     ';
 }
 
 .kf-name__label {
@@ -19,7 +31,6 @@
 }
 .kf-anzahl__input {
   grid-area: input-anzahl;
-  padding: 0 !important;
 }
 .kf-spiel__1 {
   grid-area: spiel-1;
@@ -47,12 +58,21 @@
 }
 
 .kf-anzahl-container {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100%;
+  grid-template-areas: 'dec inc';
   height: 100%;
-  margin: 0;
-  padding: 0;
 }
-.kf-anzahl-container .kf-button {
-  flex: 1 1 50%;
+
+.kf-anzahl__button-dec {
+  grid-area: dec;
+}
+
+.kf-anzahl__button-inc {
+  grid-area: inc;
+}
+
+.kf-button-container {
+  grid-area: buttons;
 }

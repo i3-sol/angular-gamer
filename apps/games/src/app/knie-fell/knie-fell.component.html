@@ -1,4 +1,4 @@
-<div class="kf" *ngIf="state$ | async as state">
+<div class="kf kf-container" *ngIf="state$ | async as state">
   <form
     [formGroup]="state.form"
     [frFormCache]="state.form"
@@ -7,7 +7,7 @@
     #formCache="frFormCache"
     (ngSubmit)="submit(state)"
   >
-    <div class="kf-container">
+    <div class="kf-form">
       <label class="kf-label kf-name__label">Name</label>
       <input
         class="kf-input kf-name__input"
@@ -55,12 +55,12 @@
       <span class="kf-input kf-input--read-only kf-gesamt__input">
         {{ state.gesamtSpiele }}
       </span>
-    </div>
-    <div>
-      <button type="submit" class="kf-button">speichern</button>
-      <button type="button" class="kf-button" (click)="reset(formCache)">
-        alles löschen
-      </button>
+      <div class="kf-button-container">
+        <button type="submit" class="kf-button">speichern</button>
+        <button type="button" class="kf-button" (click)="reset(formCache)">
+          alles löschen
+        </button>
+      </div>
     </div>
   </form>
 </div>

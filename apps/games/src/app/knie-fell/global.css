@@ -1,8 +1,9 @@
 .kf {
   --color: cornflowerblue;
   --invalid-color: red;
-  --label-width: 100px;
-  --input-width: 50px;
+  --max-container-width: 400px;
+  --label-width: 2fr;
+  --input-width: 1fr;
   --line-height: 3ex;
   --padding: 3px;
   font-family: Arial, Helvetica, sans-serif;
@@ -24,9 +25,13 @@
   color: var(--color);
   outline: 1px solid var(--color);
   padding: var(--padding);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
 }
 
 .kf .kf-input {
+  width: calc(100% - 2 * var(--padding));
   margin: 0;
   padding: 0;
   border: 0;
@@ -46,4 +51,5 @@
 
 .kf .kf-input.ng-invalid {
   color: var(--invalid-color);
+  outline: 1px solid var(--invalid-color);
 }
