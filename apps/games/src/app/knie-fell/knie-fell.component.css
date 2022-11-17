@@ -2,12 +2,6 @@
   width: 100%;
 }
 
-@media (min-width: 600px) {
-  .kf-container {
-    width: var(--max-container-width);
-  }
-}
-
 .kf-form {
   display: grid;
   justify-content: center;

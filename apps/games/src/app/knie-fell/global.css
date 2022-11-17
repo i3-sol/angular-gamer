@@ -1,13 +1,26 @@
 .kf {
   --color: cornflowerblue;
   --invalid-color: red;
-  --max-container-width: 400px;
-  --label-width: 2fr;
-  --input-width: 1fr;
-  --line-height: 3ex;
-  --padding: 3px;
+  --line-height: 1.5em;
+  --padding: 0.3ch;
+  --desktop-input-width: 7ch;
+  --desktop-label-width: 14ch;
+  --mobile-input-width: 1fr;
+  --mobile-label-width: 2fr;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: small;
+}
+
+.kf-form-container {
+  --label-width: var(--mobile-label-width);
+  --input-width: var(--mobile-input-width);
+}
+
+@media (min-width: 62ch) and (pointer: fine),
+  (min-width: 62ch) and (pointer: none) {
+  .kf-form-container {
+    --label-width: var(--desktop-label-width);
+    --input-width: var(--desktop-input-width);
+  }
 }
 
 .kf input::-webkit-outer-spin-button,

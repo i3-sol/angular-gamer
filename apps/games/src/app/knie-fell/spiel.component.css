@@ -27,6 +27,7 @@
 }
 .kf-spiel__label-nummer {
   grid-area: label-spiel;
+  text-align: center;
 }
 .kf-spiel__oberer-block {
   grid-area: oberer-block;
