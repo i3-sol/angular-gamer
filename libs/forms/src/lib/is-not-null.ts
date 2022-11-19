@@ -1,5 +1,4 @@
-import { Observable, OperatorFunction } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observable, OperatorFunction, filter } from 'rxjs';
 
 const isNotNullGuard = <T>(r: T | null | undefined): r is T => {
   return r != null;
