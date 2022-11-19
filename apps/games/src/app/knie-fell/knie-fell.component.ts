@@ -2,7 +2,11 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { FrFormCacheDirective, FrFormCacheValue } from '@flensrocker/forms';
+import {
+  FrFormCacheDirective,
+  FrFormCacheValue,
+  provideLocalStorageFormCache,
+} from '@flensrocker/forms';
 
 import {
   KnieFellState,
@@ -29,7 +33,7 @@ import { SpielComponent } from './spiel.component';
     FrFormCacheDirective,
     SpielComponent,
   ],
-  providers: [KnieFellService],
+  providers: [KnieFellService, provideLocalStorageFormCache()],
 })
 export class KnieFellComponent {
   readonly #knieFellService = inject(KnieFellService);
