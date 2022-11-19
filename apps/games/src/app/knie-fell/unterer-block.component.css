@@ -3,13 +3,13 @@
   grid-template-columns: var(--label-width) var(--input-width);
   grid-template-rows: repeat(8, var(--line-height));
   grid-template-areas:
-    'label-3pasch input-3pasch'
-    'label-4pasch input-4pasch'
-    'label-fullhouse input-fullhouse'
-    'label-klstrasse input-klstrasse'
-    'label-grstrasse input-grstrasse'
-    'label-kniefell input-kniefell'
-    'label-chance input-chance'
+    'label-3pasch       input-3pasch'
+    'label-4pasch       input-4pasch'
+    'label-fullhouse    input-fullhouse'
+    'label-klstrasse    input-klstrasse'
+    'label-grstrasse    input-grstrasse'
+    'label-kniefell     input-kniefell'
+    'label-chance       input-chance'
     'label-unten-gesamt unten-gesamt';
 }
 
