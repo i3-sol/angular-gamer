@@ -138,12 +138,12 @@ export class KnieFellService implements OnDestroy {
   readonly #destroyed = new Subject<void>();
   readonly #formCreationValue$ = new Subject<KnieFellValue>();
   readonly #effect$ = new Subject<KnieFellEffect>();
+  readonly #fb = inject(NonNullableFormBuilder);
 
-  readonly fb = inject(NonNullableFormBuilder);
   readonly state$: Observable<KnieFellState> = this.#formCreationValue$.pipe(
     startWith(initialKnieFellValue),
     switchMap((formCreationValue) =>
-      mapKnieFellFormToState(this.fb, formCreationValue)
+      mapKnieFellFormToState(this.#fb, formCreationValue)
     ),
     takeUntil(this.#destroyed),
     shareReplay({ bufferSize: 1, refCount: true }),
@@ -161,12 +161,12 @@ export class KnieFellService implements OnDestroy {
     this.#destroyed.complete();
   }
 
-  initialize(formValue?: KnieFellValue): void {
+  setValue(formValue?: KnieFellValue): void {
     this.#formCreationValue$.next(formValue ?? initialKnieFellValue);
   }
 
   addSpiel(): void {
-    this.#effect$.next((state) => addSpiel(this.fb, state.form));
+    this.#effect$.next((state) => addSpiel(this.#fb, state.form));
   }
 
   removeSpiel(): void {

@@ -35,7 +35,7 @@ export class KnieFellComponent {
 
   setCachedValue(cacheValue: FrFormCacheValue<KnieFellValue>): void {
     if (cacheValue.value != null) {
-      this.#knieFellService.initialize(cacheValue.value);
+      this.#knieFellService.setValue(cacheValue.value);
     }
   }
 
@@ -53,13 +53,13 @@ export class KnieFellComponent {
 
   submit(state: KnieFellState): void {
     // TODO store localStorage or similar
-    this.#knieFellService.initialize();
+    this.#knieFellService.setValue();
   }
 
   reset(formCache: FrFormCacheDirective<KnieFellValue>): void {
     if (confirm('Sollen alle Eingaben gelöscht werden?')) {
       formCache.removeValue();
-      this.#knieFellService.initialize();
+      this.#knieFellService.setValue();
     }
   }
 }
