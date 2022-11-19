@@ -20,8 +20,15 @@ export type UntererBlockValue = {
   readonly knieFell: Feld;
   readonly chance: Feld;
 };
-export type UntererBlockForm = FormOf<UntererBlockValue>;
+
 export type UntererBlockFormGroup = FormGroupOf<UntererBlockValue>;
+
+export type UntererBlockState = {
+  readonly spielNummer: number;
+  readonly form: UntererBlockFormGroup;
+  readonly werte: UntererBlockValue;
+  readonly gesamtUntererBlock: number;
+};
 
 export const initialUntererBlockValue: UntererBlockValue = {
   dreierpasch: ohneEingabe,
@@ -58,7 +65,7 @@ export const createUntererBlockForm = (
   fb: NonNullableFormBuilder,
   value: UntererBlockValue
 ): UntererBlockFormGroup => {
-  const form = fb.group<UntererBlockForm>({
+  const form = fb.group<FormOf<UntererBlockValue>>({
     dreierpasch: fb.control(value.dreierpasch, {
       validators: [Validators.min(5), Validators.max(30)],
     }),
@@ -79,13 +86,6 @@ export const createUntererBlockForm = (
   });
 
   return form;
-};
-
-export type UntererBlockState = {
-  readonly spielNummer: number;
-  readonly form: UntererBlockFormGroup;
-  readonly werte: UntererBlockValue;
-  readonly gesamtUntererBlock: number;
 };
 
 const calcUntererBlockGesamt = (werte: UntererBlockValue): number => {

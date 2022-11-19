@@ -22,25 +22,8 @@ export type SpielValue = {
   readonly obererBlock: ObererBlockValue;
   readonly untererBlock: UntererBlockValue;
 };
-export type SpielForm = FormOf<SpielValue>;
+
 export type SpielFormGroup = FormGroupOf<SpielValue>;
-
-export const initialSpielValue = (): SpielValue => ({
-  obererBlock: initialObererBlockValue,
-  untererBlock: initialUntererBlockValue,
-});
-
-export const createSpielForm = (
-  fb: NonNullableFormBuilder,
-  value: SpielValue
-): SpielFormGroup => {
-  const form = fb.group<SpielForm>({
-    obererBlock: createObererBlockForm(fb, value.obererBlock),
-    untererBlock: createUntererBlockForm(fb, value.untererBlock),
-  });
-
-  return form;
-};
 
 export type SpielState = {
   readonly form: SpielFormGroup;
@@ -48,6 +31,23 @@ export type SpielState = {
   readonly obererBlock: ObererBlockState;
   readonly untererBlock: UntererBlockState;
   readonly summeGesamt: number;
+};
+
+export const initialSpielValue: SpielValue = {
+  obererBlock: initialObererBlockValue,
+  untererBlock: initialUntererBlockValue,
+};
+
+export const createSpielForm = (
+  fb: NonNullableFormBuilder,
+  value: SpielValue
+): SpielFormGroup => {
+  const form = fb.group<FormOf<SpielValue>>({
+    obererBlock: createObererBlockForm(fb, value.obererBlock),
+    untererBlock: createUntererBlockForm(fb, value.untererBlock),
+  });
+
+  return form;
 };
 
 export const mapSpielFormToState = (

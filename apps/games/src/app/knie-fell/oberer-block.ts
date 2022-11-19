@@ -24,8 +24,22 @@ export type ObererBlockValue = {
   readonly fuenfer: Feld;
   readonly sechser: Feld;
 };
-export type ObererBlockForm = FormOf<ObererBlockValue>;
+
 export type ObererBlockFormGroup = FormGroupOf<ObererBlockValue>;
+
+type ObererBlockBonus = 0 | 35;
+const obenKeinBonus: ObererBlockBonus = 0;
+const obenBonus: ObererBlockBonus = 35;
+const obenBonusAb = 63;
+
+export type ObererBlockState = {
+  readonly spielNummer: number;
+  readonly form: ObererBlockFormGroup;
+  readonly werte: ObererBlockValue;
+  readonly gesamt: number;
+  readonly bonus: ObererBlockBonus;
+  readonly gesamtObererBlock: number;
+};
 
 export const initialObererBlockValue: ObererBlockValue = {
   einser: ohneEingabe,
@@ -77,7 +91,7 @@ export const createObererBlockForm = (
   fb: NonNullableFormBuilder,
   value: ObererBlockValue
 ): ObererBlockFormGroup => {
-  const form = fb.group<ObererBlockForm>({
+  const form = fb.group<FormOf<ObererBlockValue>>({
     einser: fb.control(value.einser, { validators: [vielfachesVon(1)] }),
     zweier: fb.control(value.zweier, { validators: [vielfachesVon(2)] }),
     dreier: fb.control(value.dreier, { validators: [vielfachesVon(3)] }),
@@ -87,20 +101,6 @@ export const createObererBlockForm = (
   });
 
   return form;
-};
-
-type ObererBlockBonus = 0 | 35;
-const obenKeinBonus: ObererBlockBonus = 0;
-const obenBonus: ObererBlockBonus = 35;
-const obenBonusAb = 63;
-
-export type ObererBlockState = {
-  readonly spielNummer: number;
-  readonly form: ObererBlockFormGroup;
-  readonly werte: ObererBlockValue;
-  readonly gesamt: number;
-  readonly bonus: ObererBlockBonus;
-  readonly gesamtObererBlock: number;
 };
 
 const calcObererBlockGesamt = (werte: ObererBlockValue): number => {

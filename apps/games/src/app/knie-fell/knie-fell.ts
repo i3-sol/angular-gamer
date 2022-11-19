@@ -31,25 +31,8 @@ export type KnieFellValue = {
   readonly name: string;
   readonly spiele: SpielValue[];
 };
-export type KnieFellForm = FormOf<KnieFellValue>;
+
 export type KnieFellFormGroup = FormGroupOf<KnieFellValue>;
-
-export const initialKnieFellValue: KnieFellValue = {
-  name: '',
-  spiele: new Array(maxAnzahlSpiele).fill(null).map((_) => initialSpielValue()),
-};
-
-export const createKnieFellForm = (
-  fb: NonNullableFormBuilder,
-  value: KnieFellValue
-): KnieFellFormGroup => {
-  const form = fb.group<KnieFellForm>({
-    name: fb.control(value.name, { validators: Validators.required }),
-    spiele: fb.array(value.spiele.map((spiel) => createSpielForm(fb, spiel))),
-  });
-
-  return form;
-};
 
 export type KnieFellState = {
   readonly form: KnieFellFormGroup;
@@ -60,6 +43,23 @@ export type KnieFellState = {
   readonly disableAddSpiel: boolean;
 };
 
+const initialKnieFellValue: KnieFellValue = {
+  name: '',
+  spiele: new Array(maxAnzahlSpiele).fill(null).map((_) => initialSpielValue),
+};
+
+const createKnieFellForm = (
+  fb: NonNullableFormBuilder,
+  value: KnieFellValue
+): KnieFellFormGroup => {
+  const form = fb.group<FormOf<KnieFellValue>>({
+    name: fb.control(value.name, { validators: Validators.required }),
+    spiele: fb.array(value.spiele.map((spiel) => createSpielForm(fb, spiel))),
+  });
+
+  return form;
+};
+
 const calcGesamtSpiele = (spiele: readonly SpielState[]): number => {
   return spiele.reduce(
     (gesamtSpiele, spiel) => (gesamtSpiele += spiel.summeGesamt),
@@ -67,7 +67,7 @@ const calcGesamtSpiele = (spiele: readonly SpielState[]): number => {
   );
 };
 
-export const mapKnieFellFormToState = (
+const mapKnieFellFormToState = (
   fb: NonNullableFormBuilder,
   formValue: KnieFellValue
 ): Observable<KnieFellState> => {
@@ -116,7 +116,7 @@ const addSpiel = (
 ): void => {
   const spieleLength = form.controls.spiele.length;
   if (spieleLength < maxAnzahlSpiele) {
-    form.controls.spiele.push(createSpielForm(fb, initialSpielValue()));
+    form.controls.spiele.push(createSpielForm(fb, initialSpielValue));
     form.markAsDirty();
   }
 };
