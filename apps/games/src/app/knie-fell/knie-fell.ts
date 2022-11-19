@@ -12,6 +12,7 @@ import {
   Subject,
   switchMap,
   takeUntil,
+  withLatestFrom,
 } from 'rxjs';
 
 import { FormGroupOf, FormOf, rawValueChanges } from '@flensrocker/forms';
@@ -109,7 +110,7 @@ export const mapKnieFellFormToState = (
   });
 };
 
-export const addSpiel = (
+const addSpiel = (
   fb: NonNullableFormBuilder,
   form: KnieFellFormGroup
 ): void => {
@@ -120,7 +121,7 @@ export const addSpiel = (
   }
 };
 
-export const removeSpiel = (form: KnieFellFormGroup): void => {
+const removeSpiel = (form: KnieFellFormGroup): void => {
   const spieleLength = form.controls.spiele.length;
   if (spieleLength > minAnzahlSpiele) {
     form.controls.spiele.removeAt(spieleLength - 1);
@@ -128,10 +129,15 @@ export const removeSpiel = (form: KnieFellFormGroup): void => {
   }
 };
 
+type KnieFellEffect = {
+  (state: KnieFellState): void;
+};
+
 @Injectable()
 export class KnieFellService implements OnDestroy {
   readonly #destroyed = new Subject<void>();
   readonly #formCreationValue$ = new Subject<KnieFellValue>();
+  readonly #effect$ = new Subject<KnieFellEffect>();
 
   readonly fb = inject(NonNullableFormBuilder);
   readonly state$: Observable<KnieFellState> = this.#formCreationValue$.pipe(
@@ -144,6 +150,12 @@ export class KnieFellService implements OnDestroy {
     observeOn(asapScheduler)
   );
 
+  constructor() {
+    this.#effect$
+      .pipe(withLatestFrom(this.state$), takeUntil(this.#destroyed))
+      .subscribe({ next: ([effect, state]) => effect(state) });
+  }
+
   ngOnDestroy(): void {
     this.#destroyed.next();
     this.#destroyed.complete();
@@ -151,5 +163,13 @@ export class KnieFellService implements OnDestroy {
 
   initialize(formValue?: KnieFellValue): void {
     this.#formCreationValue$.next(formValue ?? initialKnieFellValue);
+  }
+
+  addSpiel(): void {
+    this.#effect$.next((state) => addSpiel(this.fb, state.form));
+  }
+
+  removeSpiel(): void {
+    this.#effect$.next((state) => removeSpiel(state.form));
   }
 }

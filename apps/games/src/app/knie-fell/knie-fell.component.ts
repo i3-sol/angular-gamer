@@ -8,14 +8,7 @@ import {
   provideLocalStorageFormCache,
 } from '@flensrocker/forms';
 
-import {
-  KnieFellState,
-  KnieFellService,
-  KnieFellValue,
-  addSpiel,
-  KnieFellFormGroup,
-  removeSpiel,
-} from './knie-fell';
+import { KnieFellState, KnieFellService, KnieFellValue } from './knie-fell';
 import { SpielState } from './spiel';
 import { SpielComponent } from './spiel.component';
 
@@ -50,14 +43,12 @@ export class KnieFellComponent {
     return spiel.spielNummer;
   }
 
-  addSpiel(form: KnieFellFormGroup): void {
-    // TODO move to service
-    addSpiel(this.#knieFellService.fb, form);
+  addSpiel(): void {
+    this.#knieFellService.addSpiel();
   }
 
-  removeSpiel(form: KnieFellFormGroup): void {
-    // TODO move to service
-    removeSpiel(form);
+  removeSpiel(): void {
+    this.#knieFellService.removeSpiel();
   }
 
   submit(state: KnieFellState): void {
