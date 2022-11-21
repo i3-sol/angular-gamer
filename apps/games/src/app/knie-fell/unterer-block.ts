@@ -26,7 +26,6 @@ export type UntererBlockFormGroup = FormGroupOf<UntererBlockValue>;
 export type UntererBlockState = {
   readonly spielNummer: number;
   readonly form: UntererBlockFormGroup;
-  readonly werte: UntererBlockValue;
   readonly gesamtUntererBlock: number;
 };
 
@@ -110,7 +109,6 @@ const calcUntererBlock = (
   return {
     spielNummer,
     form,
-    werte,
     gesamtUntererBlock,
   };
 };

@@ -35,7 +35,6 @@ const obenBonusAb = 63;
 export type ObererBlockState = {
   readonly spielNummer: number;
   readonly form: ObererBlockFormGroup;
-  readonly werte: ObererBlockValue;
   readonly gesamt: number;
   readonly bonus: ObererBlockBonus;
   readonly gesamtObererBlock: number;
@@ -137,7 +136,6 @@ const calcObererBlock = (
   return {
     spielNummer,
     form,
-    werte,
     gesamt,
     bonus,
     gesamtObererBlock,
